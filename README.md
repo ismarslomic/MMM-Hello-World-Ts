@@ -40,3 +40,9 @@ var config = {
   ]
 }
 ```
+
+## Development
+
+Make sure to run `npm run build` after making changes to the source files (the _TypeScript_ files in [src](src) folder) and before pushing the changes to git.
+
+To make it easier to develop the module, you can use the `npm run dev:watch` command to automatically recompile the _TypeScript_ files to _JavaScript_ files when they are changed.

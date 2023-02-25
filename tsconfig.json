@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"module": "esnext",
+		"noImplicitAny": true,
+		"noUnusedLocals": true,
+		"noImplicitThis": true,
+		"sourceMap": true,
+		"target": "esnext",
+		"lib": [
+			"DOM",
+			"ESNext"
+		]
+	}
+}
