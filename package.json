@@ -1,0 +1,19 @@
+{
+	"name": "mmm-hello-world-ts",
+	"version": "1.0.0",
+	"description": "Magic Mirror example module in Typescript",
+	"main": "MMM-Hello-World.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ismarslomic/MMM-Hello-World-Ts.git"
+	},
+	"author": "ismar@slomic.no",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/ismarslomic/MMM-Hello-World-Ts/issues"
+	},
+	"homepage": "https://github.com/ismarslomic/MMM-Hello-World-Ts",
+	"scripts": {},
+	"devDependencies": {},
+	"dependencies": {}
+}
