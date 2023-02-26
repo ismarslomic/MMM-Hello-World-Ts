@@ -1,9 +1,11 @@
+// noinspection JSVoidFunctionReturnValueUsed,JSUnusedGlobalSymbols
+
 import * as NodeHelper from 'node_helper'
 import * as Log from 'logger'
 import {SocketNotification} from '../constants/SockerNotifications';
 import {Config} from '../types/Config'
 
-module.exports = NodeHelper.create({
+export default NodeHelper.create({
   start(): void {
     Log.info(`${this.name} is started!`)
   },
