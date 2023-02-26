@@ -25,6 +25,7 @@
 		"@rollup/plugin-typescript": "^11.0.0",
 		"@types/magicmirror-module": "^2.16.1",
 		"rollup": "^3.17.3",
+		"tslib": "^2.5.0",
 		"typescript": "^4.9.5"
 	}
 }
