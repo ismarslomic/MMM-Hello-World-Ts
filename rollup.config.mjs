@@ -28,9 +28,9 @@ export default [
       banner: bannerText,
       sourcemap: true,
       globals: {
-        logger: 'Log'
+        logger: 'Log',
       },
-    }
+    },
   },
   {
     input: './src/backend/Backend.ts',
@@ -41,6 +41,6 @@ export default [
       format: 'cjs',
       banner: bannerText,
       sourcemap: true,
-    }
-  }
+    },
+  },
 ]

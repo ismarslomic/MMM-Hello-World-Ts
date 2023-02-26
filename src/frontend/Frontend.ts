@@ -1,6 +1,6 @@
-import {Config} from '../types/Config'
+import { Config } from '../types/Config'
 import * as Log from 'logger'
-import {SocketNotification} from "../constants/SockerNotifications";
+import { SocketNotification } from '../constants/SocketNotifications'
 
 Module.register<Config>('MMM-Hello-World-Ts', {
   // Default module config
@@ -22,7 +22,7 @@ Module.register<Config>('MMM-Hello-World-Ts', {
   },
 
   // MM function: returns template data
-  getTemplateData(): { text: string, lastUpdated: string } {
+  getTemplateData(): { text: string; lastUpdated: string } {
     return {
       text: this.state?.text,
       lastUpdated: new Date(this.state?.lastUpdated).toLocaleString(),
@@ -32,7 +32,11 @@ Module.register<Config>('MMM-Hello-World-Ts', {
   // MM function: receives socket notifications from node helper
   socketNotificationReceived(notificationIdentifier: string, payload): void {
     if (notificationIdentifier === SocketNotification.GREETINGS_TEXT_RESPONSE) {
-      Log.info(`${this.name} received a socket notification: '${notificationIdentifier}' with payload: ${JSON.stringify(payload)}`)
+      Log.info(
+        `${this.name} received a socket notification: '${notificationIdentifier}' with payload: ${JSON.stringify(
+          payload
+        )}`
+      )
       this.state = payload
       this.updateDom()
     } else {

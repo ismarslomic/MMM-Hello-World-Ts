@@ -42,10 +42,10 @@ var config = {
       module: 'MMM-Hello-World-Ts',
       position: 'top_left',
       config: {
-        text: 'Hello world Ismar!'
-      }
-    }
-  ]
+        text: 'Hello world Ismar!',
+      },
+    },
+  ],
 }
 ```
 
