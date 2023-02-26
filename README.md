@@ -31,8 +31,9 @@ the `config/config.js` file:
 ```js
 var config = {
   modules: [
-    {
-      module: 'MMM-Hello-World-Ts',
+    { 
+      module: 'MMM-Hello-World-Ts', 
+      position: 'top_left',
       config: {
         text: 'Hello world Ismar!'
       }
