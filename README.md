@@ -1,4 +1,5 @@
 # Magic Mirror module: Hello world
+[![CodeQL](https://github.com/ismarslomic/MMM-Hello-World-Ts/actions/workflows/codeql.yml/badge.svg)](https://github.com/ismarslomic/MMM-Hello-World-Ts/actions/workflows/codeql.yml)
 
 > Simple Magic Mirror module written in Typescript demonstrating use of the [core module file ](https://docs.magicmirror.builders/development/core-module-file.html#available-module-instance-properties) (frontend)
 > and [node helper](https://docs.magicmirror.builders/development/node-helper.html) (backend) in addition to using the [nunjucks](https://mozilla.github.io/nunjucks/) templates for rendering data.
