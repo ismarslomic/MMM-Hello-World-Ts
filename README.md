@@ -1,10 +1,16 @@
 # Magic Mirror module: Hello world
-[![CodeQL](https://github.com/ismarslomic/MMM-Hello-World-Ts/actions/workflows/codeql.yml/badge.svg)](https://github.com/ismarslomic/MMM-Hello-World-Ts/actions/workflows/codeql.yml)
 
-> Simple Magic Mirror module written in Typescript demonstrating use of the [core module file ](https://docs.magicmirror.builders/development/core-module-file.html#available-module-instance-properties) (frontend)
-> and [node helper](https://docs.magicmirror.builders/development/node-helper.html) (backend) in addition to using the [nunjucks](https://mozilla.github.io/nunjucks/) templates for rendering data.
+[![CodeQL](https://github.com/ismarslomic/MMM-Hello-World-Ts/actions/workflows/codeql.yml/badge.svg)](https://github.com/ismarslomic/MMM-Hello-World-Ts/actions/workflows/codeql.yml)
+[![ESLint](https://github.com/ismarslomic/MMM-Hello-World-Ts/actions/workflows/eslint.yml/badge.svg)](https://github.com/ismarslomic/MMM-Hello-World-Ts/actions/workflows/eslint.yml)
+
+> Simple Magic Mirror module written in Typescript demonstrating use of
+> the [core module file ](https://docs.magicmirror.builders/development/core-module-file.html#available-module-instance-properties) (
+> frontend)
+> and [node helper](https://docs.magicmirror.builders/development/node-helper.html) (backend) in addition to using
+> the [nunjucks](https://mozilla.github.io/nunjucks/) templates for rendering data.
 >
-> The transpiled JavaScript files should work in the same way as the original JavaScript module [MMM-Hello-World](https://github.com/ismarslomic/MMM-Hello-World).
+> The transpiled JavaScript files should work in the same way as the original JavaScript
+> module [MMM-Hello-World](https://github.com/ismarslomic/MMM-Hello-World).
 
 ## Example screenshot
 
@@ -32,8 +38,8 @@ the `config/config.js` file:
 ```js
 var config = {
   modules: [
-    { 
-      module: 'MMM-Hello-World-Ts', 
+    {
+      module: 'MMM-Hello-World-Ts',
       position: 'top_left',
       config: {
         text: 'Hello world Ismar!'
@@ -45,6 +51,8 @@ var config = {
 
 ## Development
 
-Make sure to run `npm run build` after making changes to the source files (the _TypeScript_ files in [src](src) folder) and before pushing the changes to git.
+Make sure to run `npm run build` after making changes to the source files (the _TypeScript_ files in [src](src) folder)
+and before pushing the changes to git.
 
-To make it easier to develop the module, you can use the `npm run dev:watch` command to automatically recompile the _TypeScript_ files to _JavaScript_ files when they are changed.
+To make it easier to develop the module, you can use the `npm run dev:watch` command to automatically recompile the
+_TypeScript_ files to _JavaScript_ files when they are changed.
