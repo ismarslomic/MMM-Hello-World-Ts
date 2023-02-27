@@ -21,7 +21,8 @@
     "prettier-check": "npx prettier --check .",
     "prettier-fix": "npx prettier --write .",
     "dev": "rollup -c --sourcemap=inline",
-    "dev:watch": "npm run dev -- --watch"
+    "dev:watch": "npm run dev -- --watch",
+    "prepare": "is-ci || husky install"
   },
   "devDependencies": {
     "@microsoft/eslint-formatter-sarif": "^3.0.0",
@@ -34,6 +35,9 @@
     "@typescript-eslint/parser": "^5.53.0",
     "eslint": "^8.35.0",
     "eslint-config-prettier": "^8.6.0",
+    "husky": "^8.0.0",
+    "is-ci": "^3.0.1",
+    "lint-staged": "^13.1.2",
     "prettier": "^2.8.4",
     "rollup": "^3.17.3",
     "tslib": "^2.5.0",

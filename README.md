@@ -52,8 +52,10 @@ var config = {
 
 ## Development
 
-Make sure to run `npm run build` after making changes to the source files (the _TypeScript_ files in [src](src) folder)
-and before pushing the changes to git.
+1. Clone the repository
+2. Install the dependencies with `npm install`
+3. Automatically recompile the _TypeScript_ files when they are changed with `npm run dev:watch` or run
+   explicitly with `npm run build`
 
-To make it easier to develop the module, you can use the `npm run dev:watch` command to automatically recompile the
-_TypeScript_ files to _JavaScript_ files when they are changed.
+Note! `pre-commit` hook is configured to run _eslint_, _prettier_ and _build_ before committing the changes to git,
+see [lint-staged](lint-staged.config.mjs) and [husky pre-commit](.husky/pre-commit) configuration files.
