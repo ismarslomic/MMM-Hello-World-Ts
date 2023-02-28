@@ -10,7 +10,7 @@ Module.register<Config>('MMM-Hello-World-Ts', {
 
   // MM function: this method is called when all modules are loaded and the system is ready to boot up.
   start(): void {
-    Log.info(`${this.name} is starting`)
+    Log.debug(`${this.name} is starting`)
     this.loadData()
     this.scheduleUpdate()
     this.updateDom()
@@ -32,7 +32,7 @@ Module.register<Config>('MMM-Hello-World-Ts', {
   // MM function: receives socket notifications from node helper
   socketNotificationReceived(notificationIdentifier: string, payload): void {
     if (notificationIdentifier === SocketNotification.GREETINGS_TEXT_RESPONSE) {
-      Log.info(
+      Log.debug(
         `${this.name} received a socket notification: '${notificationIdentifier}' with payload: ${JSON.stringify(
           payload
         )}`
@@ -53,7 +53,7 @@ Module.register<Config>('MMM-Hello-World-Ts', {
 
   // Custom function: send socker notification to node helper with config from user
   loadData(): void {
-    Log.info(`${this.name} is loading data`)
+    Log.debug(`${this.name} is loading data`)
     this.sendSocketNotification('GREETINGS_TEXT_REQUEST', this.config)
   },
 })
