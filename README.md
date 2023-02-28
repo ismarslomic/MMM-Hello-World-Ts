@@ -28,7 +28,7 @@
 2. Change into the `MMM-Hello-World-Ts` module folder and install runtime dependencies with
    ```sh
    cd MMM-Hello-World-Ts
-   npm install --omit=dev
+   npm run install:dep
    ```
 
 ## Using the module
