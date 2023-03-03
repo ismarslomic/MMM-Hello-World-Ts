@@ -7,6 +7,6 @@
     "sourceMap": true,
     "target": "esnext",
     "lib": ["DOM", "ESNext"],
-    "types": ["cypress", "node"]
+    "types": ["cypress", "node", "magicmirror-module"]
   }
 }
