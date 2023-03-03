@@ -1,0 +1,96 @@
+name: E2E tests
+on:
+  # manual button click from the GitHub UI
+  workflow_dispatch:
+  # pushing commit to the main branch
+  push:
+    branches:
+      - main
+jobs:
+  # clone the MagicMirror and custom module repos
+  magicmirror-setup:
+    runs-on: ubuntu-22.04
+    name: Clone MagicMirror and custom module
+    steps:
+      # Checkout the MagicMirror repo
+      - name: Checkout MagicMirror v2.22.0 🛎️
+        uses: actions/checkout@v3
+        with:
+          repository: MichMich/MagicMirror
+          path: MagicMirror
+          ref: v2.22.0
+
+      # Checkout this module repo
+      - name: Checkout MMM-Hello-World-Ts 🛎️
+        uses: actions/checkout@v3
+        with:
+          path: MagicMirror/modules/MMM-Hello-World-Ts
+          ref: main
+
+      # show directory contents
+      - run: ls -la
+      - run: ls -la MagicMirror
+      - run: ls -la MagicMirror/modules
+
+      # https://glebbahmutov.com/blog/parallel-cypress-tests-gh-action/
+      - name: Upload magirmirror folder 🆙
+        uses: actions/upload-artifact@v3
+        # https://github.com/actions/upload-artifact#upload-an-entire-directory
+        with:
+          name: magicmirror
+          if-no-files-found: error
+          # upload all files in the "MagicMirror" folder
+          path: MagicMirror
+
+  # this job runs after cloning the MagicMirror repo and adding custom module
+  cypress-run:
+    runs-on: ubuntu-22.04
+    name: Cypress E2E on Node 18
+    needs: magicmirror-setup
+    steps:
+      # Set version of node to use
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.14
+
+      # Checkout the e2e tests in this repo
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Download the magicmirror folder ⏬
+        # https://github.com/actions/download-artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: magicmirror
+          # download all files into "MagicMirror" folder
+          path: MagicMirror
+
+      # Install MagicMirror dependencies
+      - name: Install MagicMirror dependencies 📦
+        run: npm run install-mm
+        working-directory: MagicMirror
+
+      # Install custom module dependencies
+      - name: Install custom module dependencies 📦
+        run: npm run install:dep
+        working-directory: MagicMirror/modules/MMM-Hello-World-Ts
+
+      # copy the test magicmirror config file
+      - name: Copy test config file for MagicMirror
+        run: cp __tests__/e2e/mm/config.js MagicMirror/config/config.js
+
+      # show directory contents
+      - run: ls -la
+      - run: ls -la MagicMirror
+      - run: ls -la MagicMirror/config
+      - run: ls -la MagicMirror/modules
+
+      # Run the Cypress e2e tests
+      - name: Cypress run 🧪
+        uses: cypress-io/github-action@v5.1.0
+        with:
+          # start magicmirror server only
+          start: npm --prefix MagicMirror run server
+          # wait for magicmirror endpoint to be ready before running the e2e tests
+          wait-on: 'http://localhost:8080'

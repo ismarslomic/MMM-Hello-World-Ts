@@ -59,3 +59,11 @@ var config = {
 
 Note! `pre-commit` hook is configured to run _eslint_, _prettier_ and _build_ before committing the changes to git,
 see [lint-staged](lint-staged.config.mjs) and [husky pre-commit](.husky/pre-commit) configuration files.
+
+### Run e2e tests locally
+
+Make sure Magic Mirror server is running on http://localhost:8080 with config enabling this module before running the E2E tests!
+
+```bash
+npm run test:e2e
+```

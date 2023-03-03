@@ -6,6 +6,7 @@
     "noImplicitThis": true,
     "sourceMap": true,
     "target": "esnext",
-    "lib": ["DOM", "ESNext"]
+    "lib": ["DOM", "ESNext"],
+    "types": ["cypress", "node"]
   }
 }
