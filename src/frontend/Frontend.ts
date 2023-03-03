@@ -16,6 +16,17 @@ Module.register<Config>('MMM-Hello-World-Ts', {
     this.updateDom()
   },
 
+  /**
+   * The getStyles method is called to request any additional stylesheets that need to be loaded.
+   * This method should therefore return an array with strings. If you want to return a full path
+   * to a file in the module folder, use the this.file('filename.css') method. In all cases the
+   * loader will only load a file once. It even checks if the file is available in the default
+   * vendor folder.
+   */
+  getStyles() {
+    return [this.file('css/MMM-Hello-World-Ts.css')]
+  },
+
   // MM function: loads template
   getTemplate(): string {
     return 'templates/MMM-Hello-World-Ts.njk'

@@ -43,7 +43,7 @@ jobs:
         run: npm install
 
       - name: Run ESLint
-        run: npm run lint-sarif-report
+        run: npm run lint:report
         continue-on-error: true
 
       - name: Upload analysis results to GitHub

@@ -1,0 +1,14 @@
+/* stylelint-disable selector-class-pattern, declaration-no-important */
+div.MMM-Hello-World-Ts {
+  padding: 10px;
+}
+/* stylelint-enable selector-class-pattern, declaration-no-important */
+
+div.green {
+  color: #ccff90;
+  --font-primary: 'Roboto Condensed';
+}
+
+div.teal {
+  color: #a7ffeb;
+}
