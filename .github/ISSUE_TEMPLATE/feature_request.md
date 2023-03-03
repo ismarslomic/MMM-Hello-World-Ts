@@ -4,7 +4,6 @@ about: Suggest an idea for this project
 title: Short and concise summary of the feature request
 labels: enhancement
 assignees: ''
-
 ---
 
 **Is your feature request related to a problem? Please describe.**
