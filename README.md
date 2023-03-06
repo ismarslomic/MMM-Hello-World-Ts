@@ -4,6 +4,7 @@
 [![ESLint](https://github.com/ismarslomic/MMM-Hello-World-Ts/actions/workflows/eslint.yml/badge.svg)](https://github.com/ismarslomic/MMM-Hello-World-Ts/actions/workflows/eslint.yml)
 [![ESLint](https://github.com/ismarslomic/MMM-Hello-World-Ts/actions/workflows/build.yml/badge.svg)](https://github.com/ismarslomic/MMM-Hello-World-Ts/actions/workflows/build.yml)
 [![E2E tests](https://github.com/ismarslomic/MMM-Hello-World-Ts/actions/workflows/e2e-tests.yml/badge.svg)](https://github.com/ismarslomic/MMM-Hello-World-Ts/actions/workflows/e2e-tests.yml)
+[![Unit tests](https://codecov.io/gh/ismarslomic/MMM-Hello-World-Ts/branch/main/graph/badge.svg?token=MQPHY294KB)](https://codecov.io/gh/ismarslomic/MMM-Hello-World-Ts)
 
 > Simple Magic Mirror module written in Typescript demonstrating use of
 > the [core module file ](https://docs.magicmirror.builders/development/core-module-file.html#available-module-instance-properties) (
