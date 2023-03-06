@@ -68,6 +68,12 @@ npm run lint
 npm run prettier
 ```
 
+### Run unit tests locally
+
+```bash
+npm run test:unit
+```
+
 ### Run e2e tests locally
 
 Make sure Magic Mirror server is running on http://localhost:8080 with config enabling this module before running the E2E tests!
@@ -75,3 +81,8 @@ Make sure Magic Mirror server is running on http://localhost:8080 with config en
 ```bash
 npm run test:e2e
 ```
+
+### Codecov integration in Github actions
+
+Add **Repository secret** in your Github repository with name `CODECOV_TOKEN` and a
+secret value from your [codecov.io](https://app.codecov.io/gh) account.

@@ -3,11 +3,7 @@
 
 name: Build & Test
 
-on:
-  push:
-    branches: ['main']
-  pull_request:
-    branches: ['main']
+on: [push, pull_request]
 
 jobs:
   build:
@@ -19,14 +15,32 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run prettier
-      - run: npm run build
-      - run: npm run test:unit
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Run code linting
+        run: npm run lint
+
+      - name: Run code style linting
+        run: npm run prettier
+
+      - name: Run build
+        run: npm run build
+
+      - name: Run unit tests with coverage
+        run: npm run test:unit:coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          flags: unittests # optional
+          verbose: true # optional (default = false)
