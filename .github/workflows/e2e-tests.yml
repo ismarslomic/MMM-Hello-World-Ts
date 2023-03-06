@@ -90,6 +90,8 @@ jobs:
       - name: Cypress run 🧪
         uses: cypress-io/github-action@v5.1.0
         with:
+          # use the cypress config file in the tests folder
+          config-file: __tests__/e2e/cypress.config.ts
           # start magicmirror server only
           start: npm --prefix MagicMirror run server
           # wait for magicmirror endpoint to be ready before running the e2e tests

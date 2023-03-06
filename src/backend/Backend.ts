@@ -5,7 +5,7 @@ import * as Log from 'logger'
 import { SocketNotification } from '../constants/SocketNotifications'
 import { Config } from '../types/Config'
 
-export default NodeHelper.create({
+module.exports = NodeHelper.create({
   start(): void {
     Log.debug(`${this.name} is started!`)
   },

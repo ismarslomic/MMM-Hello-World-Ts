@@ -6,7 +6,9 @@
     "noImplicitThis": true,
     "sourceMap": true,
     "target": "esnext",
+    "esModuleInterop": true,
     "lib": ["DOM", "ESNext"],
-    "types": ["cypress", "node", "magicmirror-module"]
-  }
+    "types": ["jest", "node", "magicmirror-module"]
+  },
+  "exclude": ["__tests__/**/*.ts"]
 }
