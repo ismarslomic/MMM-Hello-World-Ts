@@ -1,6 +1,6 @@
 import { NodeHelperModule } from 'node_helper'
 import * as Log from 'logger'
-import { Config } from 'src/types/Config'
+import { Config } from '../../src/types/Config'
 import { SocketNotification } from '../../src/constants/SocketNotifications'
 
 describe('Backend', () => {
