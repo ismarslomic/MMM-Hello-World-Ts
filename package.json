@@ -26,7 +26,7 @@
     "install:dep": "CI=true npm install --omit=dev",
     "test:e2e": "cypress run -C __tests__/e2e/cypress.config.ts",
     "test:unit": "jest",
-    "test:coverage": "jest --coverage"
+    "test:unit:coverage": "jest --coverage"
   },
   "devDependencies": {
     "@microsoft/eslint-formatter-sarif": "^3.0.0",
