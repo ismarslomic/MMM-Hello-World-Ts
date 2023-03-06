@@ -6,8 +6,4 @@ require('./__mocks__/logger')
 
 beforeAll(mockConsole)
 
-afterEach(() => {
-  jest.clearAllMocks()
-})
-
 afterAll(restoreConsole)
