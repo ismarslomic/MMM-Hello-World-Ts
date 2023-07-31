@@ -54,5 +54,8 @@
   },
   "dependencies": {
     "is-ci": "^3.0.1"
+  },
+  "overrides": {
+    "tough-cookie": "^4.1.3"
   }
 }
