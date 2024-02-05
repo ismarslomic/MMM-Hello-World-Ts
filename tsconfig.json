@@ -8,7 +8,7 @@
     "target": "esnext",
     "esModuleInterop": true,
     "lib": ["DOM", "ESNext"],
-    "types": ["jest", "node", "magicmirror-module"],
+    "types": ["jest", "node", "magicmirror-module"]
   },
-  "exclude": ["__tests__/**/*.ts"],
+  "exclude": ["__tests__/**/*.ts"]
 }
