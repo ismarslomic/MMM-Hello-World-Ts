@@ -9,6 +9,7 @@ describe('Backend', () => {
   let mockedSendSocketNotification: jest.MockedFunction<typeof helper.sendSocketNotification>
 
   beforeEach(() => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     helper = require('../../src/backend/Backend')
     helper.setName('MMM-Hello-World-Ts')
 
