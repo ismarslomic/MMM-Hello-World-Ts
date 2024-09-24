@@ -2,7 +2,11 @@ import typescript from '@rollup/plugin-typescript'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import terser from '@rollup/plugin-terser'
-import pkg from './package.json' assert { type: 'json' }
+import fs from 'node:fs'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+const configPath = join(dirname(fileURLToPath(import.meta.url)), './package.json')
+const pkg = JSON.parse(fs.readFileSync(configPath, 'utf8'))
 
 // Banner to be placed at the top of the compiled files
 const bannerText = `/*! *****************************************************************************
