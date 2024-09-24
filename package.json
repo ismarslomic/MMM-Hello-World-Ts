@@ -22,7 +22,7 @@
     "prettier:fix": "npx prettier --write .",
     "dev": "rollup -c --sourcemap=inline",
     "dev:watch": "npm run dev -- --watch",
-    "prepare": "is-ci || husky install",
+    "prepare": "is-ci || husky",
     "install:dep": "CI=true npm install --omit=dev",
     "test:e2e": "cypress run -C __tests__/e2e/cypress.config.ts",
     "test:unit": "jest",
