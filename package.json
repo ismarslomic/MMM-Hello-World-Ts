@@ -29,7 +29,7 @@
     "test:unit:coverage": "jest --coverage"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.15.0",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@rollup/plugin-commonjs": "^28.0.1",
