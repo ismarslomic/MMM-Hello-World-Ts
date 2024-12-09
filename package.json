@@ -56,6 +56,6 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "is-ci": "^3.0.1"
+    "is-ci": "^4.1.0"
   }
 }
