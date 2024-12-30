@@ -38,7 +38,7 @@
     "@rollup/plugin-typescript": "^12.1.2",
     "@types/jest": "^29.5.14",
     "@types/magicmirror-module": "^2.16.5",
-    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.0",
     "cypress": "^13.16.1",
     "eslint": "^9.17.0",
