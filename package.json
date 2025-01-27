@@ -41,7 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^8.20.0",
     "@typescript-eslint/parser": "^8.19.0",
     "cypress": "^14.0.0",
-    "eslint": "^9.18.0",
+    "eslint": "^9.19.0",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.14.0",
     "husky": "^9.1.7",
