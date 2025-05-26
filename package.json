@@ -40,7 +40,7 @@
     "@types/magicmirror-module": "^2.16.5",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
-    "cypress": "^14.3.3",
+    "cypress": "^14.4.0",
     "eslint": "^9.27.0",
     "eslint-config-prettier": "^10.1.2",
     "globals": "^16.1.0",
