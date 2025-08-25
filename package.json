@@ -48,7 +48,7 @@
     "jest": "^30.0.5",
     "lint-staged": "^16.1.5",
     "prettier": "^3.6.2",
-    "rollup": "^4.46.3",
+    "rollup": "^4.48.1",
     "stylelint": "^16.23.1",
     "stylelint-prettier": "^5.0.3",
     "ts-jest": "^29.4.1",
