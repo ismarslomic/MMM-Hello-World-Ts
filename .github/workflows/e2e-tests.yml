@@ -34,7 +34,7 @@ jobs:
 
       # https://glebbahmutov.com/blog/parallel-cypress-tests-gh-action/
       - name: Upload magirmirror folder 🆙
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         # https://github.com/actions/upload-artifact#upload-an-entire-directory
         with:
           name: magicmirror
