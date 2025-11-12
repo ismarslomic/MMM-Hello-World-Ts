@@ -34,7 +34,7 @@ jobs:
 
       # https://glebbahmutov.com/blog/parallel-cypress-tests-gh-action/
       - name: Upload magirmirror folder 🆙
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         # https://github.com/actions/upload-artifact#upload-an-entire-directory
         with:
           name: magicmirror
@@ -60,7 +60,7 @@ jobs:
 
       - name: Download the magicmirror folder ⏬
         # https://github.com/actions/download-artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: magicmirror
           # download all files into "MagicMirror" folder
@@ -88,7 +88,7 @@ jobs:
 
       # Run the Cypress e2e tests
       - name: Cypress run 🧪
-        uses: cypress-io/github-action@v6.10.2
+        uses: cypress-io/github-action@v6.10.4
         with:
           # use the cypress config file in the tests folder
           config-file: __tests__/e2e/cypress.config.ts
