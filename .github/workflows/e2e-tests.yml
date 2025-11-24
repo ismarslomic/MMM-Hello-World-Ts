@@ -14,7 +14,7 @@ jobs:
     steps:
       # Checkout the MagicMirror repo
       - name: Checkout MagicMirror v2.22.0 🛎️
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: MichMich/MagicMirror
           path: MagicMirror
@@ -22,7 +22,7 @@ jobs:
 
       # Checkout this module repo
       - name: Checkout MMM-Hello-World-Ts 🛎️
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: MagicMirror/modules/MMM-Hello-World-Ts
           ref: main
@@ -56,7 +56,7 @@ jobs:
 
       # Checkout the e2e tests in this repo
       - name: Checkout 🛎️
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Download the magicmirror folder ⏬
         # https://github.com/actions/download-artifact
