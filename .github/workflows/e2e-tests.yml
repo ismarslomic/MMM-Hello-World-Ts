@@ -60,7 +60,7 @@ jobs:
 
       - name: Download the magicmirror folder ⏬
         # https://github.com/actions/download-artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: magicmirror
           # download all files into "MagicMirror" folder
