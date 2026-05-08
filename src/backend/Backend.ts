@@ -14,7 +14,7 @@ module.exports = NodeHelper.create({
     Log.debug(`${this.name} is started!`)
   },
 
-  async socketNotificationReceived(notification: SocketNotification, config: Config) {
+  async socketNotificationReceived(notification: string, config: Config) {
     if (notification === SocketNotification.GREETINGS_TEXT_REQUEST) {
       Log.debug(`${this.name} received a socket notification: '${notification}' with config: ${JSON.stringify(config)}`)
       const payload = {
