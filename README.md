@@ -52,6 +52,15 @@ var config = {
 }
 ```
 
+### Polling options
+
+| Option            | Default | Behavior                                                                                     |
+| ----------------- | ------- | -------------------------------------------------------------------------------------------- |
+| `updateInterval`  | `10000` | Milliseconds between requests. Invalid values fall back to the default.                      |
+| `pauseWhenHidden` | `false` | Set to `true` to stop polling in `suspend()` and fetch fresh data immediately in `resume()`. |
+
+The default continues polling while hidden, preserving existing behavior. Repeated start or resume calls never create duplicate timers.
+
 ## Development
 
 1. Clone the repository and select Node.js 24 (`nvm use` reads `.nvmrc`)

@@ -21,6 +21,8 @@ describe('Backend', () => {
 
     config = {
       text: 'Hello World!',
+      updateInterval: 10000,
+      pauseWhenHidden: false,
     }
 
     jest.useFakeTimers().setSystemTime(new Date('2023-03-06T09:00:00'))

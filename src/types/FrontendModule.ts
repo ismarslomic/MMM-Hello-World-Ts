@@ -9,11 +9,16 @@ export interface FrontendModule extends Pick<
 > {
   defaults: Config
   state?: GreetingsState
+  pollingTimer?: ReturnType<typeof setInterval>
+  isPollingSuspended?: boolean
   start(): void
   getStyles(): string[]
   getTemplate(): string
   getTemplateData(): { text: string; lastUpdated: string }
   socketNotificationReceived(notification: string, payload: unknown): void
-  scheduleUpdate(): void
+  suspend(): void
+  resume(): void
+  startPolling(): void
+  stopPolling(): void
   loadData(): void
 }

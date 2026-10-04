@@ -15,6 +15,8 @@ describe('Frontend', () => {
     expect(name).toBe('MMM-Hello-World-Ts')
     expect(implementation.defaults).toEqual({
       text: 'Hello World!',
+      updateInterval: 10000,
+      pauseWhenHidden: false,
     })
     expect(typeof implementation.start).toBe('function')
     expect(typeof implementation.getStyles).toBe('function')
@@ -88,6 +90,73 @@ describe('Frontend', () => {
     expect(implementation.updateDom).not.toHaveBeenCalled()
   })
 
+  describe('polling lifecycle', () => {
+    beforeEach(() => {
+      jest.useFakeTimers()
+      sendSocketNotificationMock.mockClear()
+    })
+
+    afterEach(() => {
+      jest.clearAllTimers()
+      jest.useRealTimers()
+    })
+
+    it('uses the configured interval and keeps only one timer after repeated start', () => {
+      const { implementation } = checkAndExtractRegistration(mockModuleRegister.mock.lastCall)
+      implementation.config.updateInterval = 2000
+      implementation.start()
+      implementation.start()
+      expect(jest.getTimerCount()).toBe(1)
+      sendSocketNotificationMock.mockClear()
+      jest.advanceTimersByTime(1999)
+      expect(sendSocketNotificationMock).not.toHaveBeenCalled()
+      jest.advanceTimersByTime(1)
+      expect(sendSocketNotificationMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('pauses when opted in and refreshes once on resume', () => {
+      const { implementation } = checkAndExtractRegistration(mockModuleRegister.mock.lastCall)
+      implementation.config.pauseWhenHidden = true
+      implementation.start()
+      implementation.suspend()
+      sendSocketNotificationMock.mockClear()
+      jest.advanceTimersByTime(30000)
+      expect(sendSocketNotificationMock).not.toHaveBeenCalled()
+      expect(jest.getTimerCount()).toBe(0)
+      implementation.resume()
+      implementation.resume()
+      expect(sendSocketNotificationMock).toHaveBeenCalledTimes(1)
+      expect(jest.getTimerCount()).toBe(1)
+      jest.advanceTimersByTime(10000)
+      expect(sendSocketNotificationMock).toHaveBeenCalledTimes(2)
+    })
+
+    it('continues polling while hidden by default', () => {
+      const { implementation } = checkAndExtractRegistration(mockModuleRegister.mock.lastCall)
+      implementation.start()
+      implementation.suspend()
+      sendSocketNotificationMock.mockClear()
+      jest.advanceTimersByTime(10000)
+      expect(sendSocketNotificationMock).toHaveBeenCalledTimes(1)
+      implementation.resume()
+      expect(jest.getTimerCount()).toBe(1)
+      expect(sendSocketNotificationMock).toHaveBeenCalledTimes(1)
+    })
+
+    it.each([0, -1, NaN, Infinity, 2147483648, 1.5])(
+      'falls back to the default for invalid intervals: %p',
+      (updateInterval) => {
+        const { implementation } = checkAndExtractRegistration(mockModuleRegister.mock.lastCall)
+        implementation.config.updateInterval = updateInterval
+        implementation.startPolling()
+        jest.advanceTimersByTime(9999)
+        expect(sendSocketNotificationMock).not.toHaveBeenCalled()
+        jest.advanceTimersByTime(1)
+        expect(sendSocketNotificationMock).toHaveBeenCalledTimes(1)
+      }
+    )
+  })
+
   describe('getStyles overriden function', () => {
     it('should return correct styles', () => {
       // given
@@ -126,6 +195,8 @@ const checkAndExtractRegistration = (call?: unknown) => {
     name: 'MMM-Hello-World-Ts',
     config: {
       text: 'Hello Ismar',
+      updateInterval: 10000,
+      pauseWhenHidden: false,
     },
     identifier: 'module_1',
     updateDom: jest.fn(),
