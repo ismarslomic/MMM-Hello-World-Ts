@@ -11,6 +11,7 @@ Module.register<Config>('MMM-Hello-World-Ts', {
   // MM function: this method is called when all modules are loaded and the system is ready to boot up.
   start(): void {
     Log.debug(`${this.name} is starting`)
+    this.state = { text: this.config.text, lastUpdated: null }
     this.loadData()
     this.scheduleUpdate()
     this.updateDom()
@@ -34,9 +35,10 @@ Module.register<Config>('MMM-Hello-World-Ts', {
 
   // MM function: returns template data
   getTemplateData(): { text: string; lastUpdated: string } {
+    const lastUpdated = this.state?.lastUpdated
     return {
-      text: this.state?.text,
-      lastUpdated: new Date(this.state?.lastUpdated).toLocaleString(),
+      text: this.state?.text ?? this.config.text,
+      lastUpdated: lastUpdated == null ? '' : new Date(lastUpdated).toLocaleString(),
     }
   },
 
