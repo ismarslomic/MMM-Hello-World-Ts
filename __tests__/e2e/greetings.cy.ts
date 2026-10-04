@@ -26,7 +26,8 @@ describe('MMM-Hello-World-Ts', () => {
       .first()
       .invoke('text')
       .then((initialTimestamp) => {
-        cy.get('.MMM-Hello-World-Ts .teal', { timeout: 15000 }).first().should('not.have.text', initialTimestamp)
+        // The final query owns the retry timeout; allow a full 10-second polling cycle.
+        cy.get('.MMM-Hello-World-Ts .teal').first({ timeout: 15000 }).should('not.have.text', initialTimestamp)
         assertIndependentGreetings()
       })
   })
