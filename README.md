@@ -72,6 +72,10 @@ npm run lint:css
 npm run prettier
 ```
 
+### Verify distributed JavaScript
+
+The bundles and sourcemaps are checked in so users can install without development tools. Run `npm run build` and commit the generated files with TypeScript changes. `npm run check:generated` rebuilds and fails if the checked-in output is stale; CI runs the same check.
+
 ### Run unit tests locally
 
 ```bash
