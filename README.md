@@ -55,9 +55,11 @@ var config = {
 ## Development
 
 1. Clone the repository
-2. Install the dependencies with `npm install`
+2. Install the dependencies with `npm ci`
 3. Automatically recompile the _TypeScript_ files when they are changed with `npm run dev:watch` or run
    explicitly with `npm run build`
+
+The `pre-commit` hook only lints and formats staged files. It hides unstaged edits while rebuilding and staging the JavaScript bundles for TypeScript changes. Hooks are skipped in CI and production installs without development dependencies.
 
 Note! `pre-commit` hook is configured to run _eslint_, _prettier_ and _build_ before committing the changes to git,
 see [lint-staged](lint-staged.config.mjs) and [husky pre-commit](.husky/pre-commit) configuration files.
