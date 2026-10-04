@@ -33,6 +33,9 @@ jobs:
       - name: Run code style linting
         run: npm run prettier
 
+      - name: Check TypeScript types
+        run: npm run typecheck
+
       - name: Run build
         run: npm run build
 

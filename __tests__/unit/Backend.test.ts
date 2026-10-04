@@ -11,7 +11,7 @@ describe('Backend', () => {
   beforeEach(() => {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     helper = require('../../src/backend/Backend')
-    helper.setName('MMM-Hello-World-Ts')
+    Object.assign(helper, { name: 'MMM-Hello-World-Ts' })
 
     // Mock the MMM sendSocketNotification function which returns data back to the frontend
     mockedSendSocketNotification = helper.sendSocketNotification as jest.MockedFunction<
@@ -33,6 +33,14 @@ describe('Backend', () => {
     helper.start()
     expect(Log.debug).toHaveBeenCalledWith(`${helper.name} is started!`)
   })
+
+  test.each([null, {}, { identifier: 'module_1', config: null }, { identifier: 'module_1', config: { text: 42 } }])(
+    'ignores malformed requests: %p',
+    (payload) => {
+      helper.socketNotificationReceived(SocketNotification.GREETINGS_TEXT_REQUEST, payload)
+      expect(mockedSendSocketNotification).not.toHaveBeenCalled()
+    }
+  )
 
   test('sending greetings socket notification', async () => {
     helper.socketNotificationReceived(SocketNotification.GREETINGS_TEXT_REQUEST, { identifier: 'module_1', config })

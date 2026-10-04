@@ -1,5 +1,4 @@
-import ModuleProperties = Module.ModuleProperties
-import { Config } from '../../src/types/Config'
+import { FrontendModule } from '../../src/types/FrontendModule'
 import { MM2ModuleHelper } from '../../__mocks__/Module'
 
 const mockModuleRegister = jest.fn()
@@ -58,7 +57,7 @@ describe('Frontend', () => {
 
     it('keeps independent data across interleaved responses', () => {
       const first = checkAndExtractRegistration(mockModuleRegister.mock.lastCall).implementation
-      const second: ModuleProperties<Config> = {
+      const second: FrontendModule = {
         ...checkAndExtractRegistration(mockModuleRegister.mock.lastCall).implementation,
         identifier: 'module_2',
       }
@@ -69,12 +68,24 @@ describe('Frontend', () => {
           instance.socketNotificationReceived('GREETINGS_TEXT_RESPONSE', firstResponse)
           instance.socketNotificationReceived('GREETINGS_TEXT_RESPONSE', secondResponse)
         }
-        expect(first.state.text).toBe(text)
-        expect(second.state.text).toBe('Second greeting')
+        expect(first.getTemplateData().text).toBe(text)
+        expect(second.getTemplateData().text).toBe('Second greeting')
       }
       expect(first.updateDom).toHaveBeenCalledTimes(2)
       expect(second.updateDom).toHaveBeenCalledTimes(2)
     })
+  })
+
+  it.each([
+    null,
+    {},
+    { identifier: 'module_1', text: 'Hello', lastUpdated: NaN },
+    { identifier: 'module_1', text: 'Hello', lastUpdated: 1e30 },
+  ])('ignores malformed socket responses: %p', (payload) => {
+    const { implementation } = checkAndExtractRegistration(mockModuleRegister.mock.lastCall)
+    implementation.socketNotificationReceived('GREETINGS_TEXT_RESPONSE', payload)
+    expect(implementation.getTemplateData()).toEqual({ text: 'Hello Ismar', lastUpdated: '' })
+    expect(implementation.updateDom).not.toHaveBeenCalled()
   })
 
   describe('getStyles overriden function', () => {
@@ -104,14 +115,15 @@ describe('Frontend', () => {
 
 const checkAndExtractRegistration = (call?: unknown) => {
   if (!call) {
-    fail('Module registration call did not happen!')
+    throw new Error('Module registration call did not happen!')
   }
   const name = mockModuleRegister.mock.lastCall[0] as string
-  const implementation = mockModuleRegister.mock.lastCall[1] as ModuleProperties<Config>
+  const implementation = mockModuleRegister.mock.lastCall[1] as FrontendModule
 
   // Add MM2 inherited bits into implementation
-  const enhancedImplementation: ModuleProperties<Config> = {
+  const enhancedImplementation: FrontendModule = {
     ...implementation,
+    name: 'MMM-Hello-World-Ts',
     config: {
       text: 'Hello Ismar',
     },
