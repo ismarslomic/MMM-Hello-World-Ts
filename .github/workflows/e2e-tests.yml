@@ -45,18 +45,17 @@ jobs:
   # this job runs after cloning the MagicMirror repo and adding custom module
   cypress-run:
     runs-on: ubuntu-22.04
-    name: Cypress E2E on Node 20
+    name: Cypress E2E
     needs: magicmirror-setup
     steps:
-      # Set version of node to use
-      - name: Use Node.js 24
+      - name: Checkout module and E2E tests
+        uses: actions/checkout@v7
+
+      - name: Use the supported Node.js version
         uses: actions/setup-node@v7
         with:
-          node-version: 24.16
-
-      # Checkout the e2e tests in this repo
-      - name: Checkout 🛎️
-        uses: actions/checkout@v7
+          node-version-file: .nvmrc
+          cache: npm
 
       - name: Download the magicmirror folder ⏬
         # https://github.com/actions/download-artifact

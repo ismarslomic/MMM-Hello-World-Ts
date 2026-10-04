@@ -39,14 +39,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - name: Install ESLint
-        run: npm install
+      - name: Use the supported Node.js version
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies from the lockfile
+        run: npm ci
 
       - name: Run ESLint
+        id: lint
         run: npm run lint:report
-        continue-on-error: true
 
       - name: Upload analysis results to GitHub
+        if: >-
+          always() && steps.lint.outcome != 'skipped' &&
+          (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: eslint-results.sarif
