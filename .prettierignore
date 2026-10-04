@@ -2,7 +2,8 @@ node_modules
 .husky
 .eslintignore
 .prettierignore
-*.js
+MMM-Hello-World-Ts.js
+node_helper.js
 *.map
 *.njk
 *.png
