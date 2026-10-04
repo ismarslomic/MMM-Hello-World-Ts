@@ -10,7 +10,8 @@ describe('Backend', () => {
 
   beforeEach(() => {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    helper = require('../../src/backend/Backend')
+    const Helper = require('../../src/backend/Backend') as new () => NodeHelperModule
+    helper = new Helper()
     Object.assign(helper, { name: 'MMM-Hello-World-Ts' })
 
     // Mock the MMM sendSocketNotification function which returns data back to the frontend
@@ -27,6 +28,24 @@ describe('Backend', () => {
 
   afterEach(() => {
     jest.clearAllMocks()
+    jest.useRealTimers()
+  })
+
+  test('the generated CommonJS helper preserves the static create method', () => {
+    // Loading the distributed file catches bundler interop errors that TS source tests miss.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const BuiltHelper = require('../../node_helper.js') as new () => NodeHelperModule
+    const builtHelper = new BuiltHelper()
+    Object.assign(builtHelper, { name: 'MMM-Hello-World-Ts' })
+    builtHelper.socketNotificationReceived(SocketNotification.GREETINGS_TEXT_REQUEST, {
+      identifier: 'built_instance',
+      config,
+    })
+    expect(builtHelper.sendSocketNotification).toHaveBeenCalledWith(SocketNotification.GREETINGS_TEXT_RESPONSE, {
+      identifier: 'built_instance',
+      text: 'MMM-Hello-World-Ts says: Hello World!',
+      lastUpdated: Date.now(),
+    })
   })
 
   test('printing to console when starting the Backend module', () => {

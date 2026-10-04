@@ -84,7 +84,7 @@ npm run test:unit
 
 ### Run e2e tests locally
 
-Make sure Magic Mirror server is running on http://localhost:8080 with config enabling this module before running the E2E tests!
+E2E CI tests newly built module code against MagicMirror 2.38.0 using Node.js 24 and Cypress. To run locally, build the module, install it in that MagicMirror release, copy `__tests__/e2e/mm/config.js` to `MagicMirror/config/config.js`, and start `npm run server` in MagicMirror. The fixture uses two instances to verify socket isolation and subsequent polling updates.
 
 ```bash
 npm run test:e2e
