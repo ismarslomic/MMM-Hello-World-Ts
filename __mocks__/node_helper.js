@@ -1,44 +1,38 @@
-// noinspection JSUnusedGlobalSymbols
+const Log = require('logger')
 
-module.exports = {
-  create(overrides) {
-    const base = {
-      init() {
-        Log.log('Initializing new module helper ...')
-      },
+class NodeHelper {
+  constructor() {
+    this.sendSocketNotification = jest.fn()
+    this.setExpressApp = jest.fn()
+    this.setSocketIO = jest.fn()
+  }
 
-      loaded(callback) {
-        Log.log(`Module helper loaded: ${this.name}`)
-        callback()
-      },
+  init() {
+    Log.log('Initializing new module helper ...')
+  }
 
-      start() {
-        Log.log(`Starting module helper: ${this.name}`)
-      },
+  start() {}
+  stop() {}
+  socketNotificationReceived() {}
 
-      stop() {
-        Log.log(`Stopping module helper: ${this.name}`)
-      },
+  setName(name) {
+    this.name = name
+  }
 
-      socketNotificationReceived(notification, payload) {
-        Log.log(`${this.name} received a socket notification: ${notification} Payload: ${payload}`)
-      },
+  setPath(path) {
+    this.path = path
+  }
 
-      setName(name) {
-        this.name = name
-      },
-
-      setPath(path) {
-        this.path = path
-      },
-
-      sendSocketNotification: jest.fn(),
-
-      setExpressApp: jest.fn(),
-
-      setSocketIO: jest.fn(),
+  // Static class methods are non-enumerable, matching the real CommonJS helper.
+  static create(overrides) {
+    return class extends NodeHelper {
+      constructor() {
+        super()
+        Object.assign(this, overrides)
+        this.init()
+      }
     }
-
-    return { ...base, ...overrides }
-  },
+  }
 }
+
+module.exports = NodeHelper

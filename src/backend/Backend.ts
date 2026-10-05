@@ -1,6 +1,7 @@
 // noinspection JSVoidFunctionReturnValueUsed,JSUnusedGlobalSymbols
 
-import * as NodeHelper from 'node_helper'
+// Default import preserves static methods on MagicMirror's CommonJS NodeHelper class.
+import NodeHelper from 'node_helper'
 import * as Log from 'logger'
 import { SocketNotification } from '../constants/SocketNotifications'
 import { GreetingsResponse, isGreetingsRequest } from '../types/Greetings'
