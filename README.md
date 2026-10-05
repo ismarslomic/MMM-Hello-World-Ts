@@ -73,6 +73,15 @@ The `pre-commit` hook only lints and formats staged files. It hides unstaged edi
 Note! `pre-commit` hook is configured to run _eslint_, _prettier_ and _build_ before committing the changes to git,
 see [lint-staged](lint-staged.config.mjs) and [husky pre-commit](.husky/pre-commit) configuration files.
 
+### Temporary dependency overrides
+
+Two scoped npm overrides keep deprecated packages out of the development install while preserving SARIF reporting and Jest's Babel coverage provider:
+
+- `@microsoft/eslint-formatter-sarif` uses the project's ESLint version through `$eslint` instead of installing end-of-life ESLint 8. Remove this override when the formatter supports the project's ESLint version in its dependency or peer dependency range.
+- `babel-plugin-istanbul` uses `test-exclude` 8.0.0 instead of version 7, which installs deprecated `glob` 10. The `test-exclude` implementation is unchanged between 7.0.2 and 8.0.0; version 8 uses supported `glob` 13. Remove this override when the Babel plugin requests `test-exclude` 8 or later.
+
+When changing either override, run `npm ci`, lint reporting, and unit tests with coverage. Check that the lockfile contains no deprecated packages and that coverage still includes the same source files. See [issue #792](https://github.com/ismarslomic/MMM-Hello-World-Ts/issues/792) for the investigation.
+
 ### Linting and formatting
 
 ```bash

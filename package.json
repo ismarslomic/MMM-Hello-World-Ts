@@ -31,6 +31,14 @@
     "lint:css": "stylelint \"css/**/*.css\"",
     "check:generated": "npm run build && git diff --exit-code -- MMM-Hello-World-Ts.js MMM-Hello-World-Ts.js.map node_helper.js node_helper.js.map"
   },
+  "overrides": {
+    "@microsoft/eslint-formatter-sarif": {
+      "eslint": "$eslint"
+    },
+    "babel-plugin-istanbul": {
+      "test-exclude": "8.0.0"
+    }
+  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
