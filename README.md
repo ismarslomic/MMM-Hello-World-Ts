@@ -54,7 +54,7 @@ var config = {
 
 ## Development
 
-1. Clone the repository
+1. Clone the repository and select Node.js 24 (`nvm use` reads `.nvmrc`)
 2. Install the dependencies with `npm ci`
 3. Automatically recompile the _TypeScript_ files when they are changed with `npm run dev:watch` or run
    explicitly with `npm run build`
