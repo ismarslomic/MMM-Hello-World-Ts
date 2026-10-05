@@ -1,13 +1,18 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { FrontendModule } from '../../src/types/FrontendModule'
-import { MM2ModuleHelper } from '../../__mocks__/Module'
+import { MM2ModuleHelper } from './mocks/module'
 
-const mockModuleRegister = jest.fn()
+const mockModuleRegister = vi.fn()
 const moduleMock: MM2ModuleHelper = { register: mockModuleRegister }
 global.Module = moduleMock
-import '../../src/frontend/Frontend'
-const sendSocketNotificationMock = jest.fn()
+const sendSocketNotificationMock = vi.fn()
 
 describe('Frontend', () => {
+  beforeEach(async () => {
+    vi.resetModules()
+    await import('../../src/frontend/Frontend')
+  })
+
   it('should register client implementation', () => {
     expect(mockModuleRegister).toHaveBeenCalled()
 
@@ -92,13 +97,13 @@ describe('Frontend', () => {
 
   describe('polling lifecycle', () => {
     beforeEach(() => {
-      jest.useFakeTimers()
+      vi.useFakeTimers()
       sendSocketNotificationMock.mockClear()
     })
 
     afterEach(() => {
-      jest.clearAllTimers()
-      jest.useRealTimers()
+      vi.clearAllTimers()
+      vi.useRealTimers()
     })
 
     it('uses the configured interval and keeps only one timer after repeated start', () => {
@@ -106,11 +111,11 @@ describe('Frontend', () => {
       implementation.config.updateInterval = 2000
       implementation.start()
       implementation.start()
-      expect(jest.getTimerCount()).toBe(1)
+      expect(vi.getTimerCount()).toBe(1)
       sendSocketNotificationMock.mockClear()
-      jest.advanceTimersByTime(1999)
+      vi.advanceTimersByTime(1999)
       expect(sendSocketNotificationMock).not.toHaveBeenCalled()
-      jest.advanceTimersByTime(1)
+      vi.advanceTimersByTime(1)
       expect(sendSocketNotificationMock).toHaveBeenCalledTimes(1)
     })
 
@@ -120,14 +125,14 @@ describe('Frontend', () => {
       implementation.start()
       implementation.suspend()
       sendSocketNotificationMock.mockClear()
-      jest.advanceTimersByTime(30000)
+      vi.advanceTimersByTime(30000)
       expect(sendSocketNotificationMock).not.toHaveBeenCalled()
-      expect(jest.getTimerCount()).toBe(0)
+      expect(vi.getTimerCount()).toBe(0)
       implementation.resume()
       implementation.resume()
       expect(sendSocketNotificationMock).toHaveBeenCalledTimes(1)
-      expect(jest.getTimerCount()).toBe(1)
-      jest.advanceTimersByTime(10000)
+      expect(vi.getTimerCount()).toBe(1)
+      vi.advanceTimersByTime(10000)
       expect(sendSocketNotificationMock).toHaveBeenCalledTimes(2)
     })
 
@@ -136,10 +141,10 @@ describe('Frontend', () => {
       implementation.start()
       implementation.suspend()
       sendSocketNotificationMock.mockClear()
-      jest.advanceTimersByTime(10000)
+      vi.advanceTimersByTime(10000)
       expect(sendSocketNotificationMock).toHaveBeenCalledTimes(1)
       implementation.resume()
-      expect(jest.getTimerCount()).toBe(1)
+      expect(vi.getTimerCount()).toBe(1)
       expect(sendSocketNotificationMock).toHaveBeenCalledTimes(1)
     })
 
@@ -149,9 +154,9 @@ describe('Frontend', () => {
         const { implementation } = checkAndExtractRegistration(mockModuleRegister.mock.lastCall)
         implementation.config.updateInterval = updateInterval
         implementation.startPolling()
-        jest.advanceTimersByTime(9999)
+        vi.advanceTimersByTime(9999)
         expect(sendSocketNotificationMock).not.toHaveBeenCalled()
-        jest.advanceTimersByTime(1)
+        vi.advanceTimersByTime(1)
         expect(sendSocketNotificationMock).toHaveBeenCalledTimes(1)
       }
     )
@@ -183,11 +188,11 @@ describe('Frontend', () => {
 })
 
 const checkAndExtractRegistration = (call?: unknown) => {
-  if (!call) {
+  if (!Array.isArray(call) || call.length !== 2) {
     throw new Error('Module registration call did not happen!')
   }
-  const name = mockModuleRegister.mock.lastCall[0] as string
-  const implementation = mockModuleRegister.mock.lastCall[1] as FrontendModule
+  const name = call[0] as string
+  const implementation = call[1] as FrontendModule
 
   // Add MM2 inherited bits into implementation
   const enhancedImplementation: FrontendModule = {
@@ -199,7 +204,7 @@ const checkAndExtractRegistration = (call?: unknown) => {
       pauseWhenHidden: false,
     },
     identifier: 'module_1',
-    updateDom: jest.fn(),
+    updateDom: vi.fn(),
     file: (fileName: string) => `/file/${fileName}`,
     sendSocketNotification: sendSocketNotificationMock,
   }

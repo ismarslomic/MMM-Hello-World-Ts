@@ -1,3 +1,6 @@
+import { afterEach, beforeEach, describe, expect, test, vi, type MockedFunction } from 'vitest'
+import Helper from '../../src/backend/Backend'
+import { loadBuiltHelper } from './helpers/load-built-helper'
 import { NodeHelperModule } from 'node_helper'
 import * as Log from 'logger'
 import { Config } from '../../src/types/Config'
@@ -6,18 +9,14 @@ import { SocketNotification } from '../../src/constants/SocketNotifications'
 describe('Backend', () => {
   let helper: NodeHelperModule
   let config: Config
-  let mockedSendSocketNotification: jest.MockedFunction<typeof helper.sendSocketNotification>
+  let mockedSendSocketNotification: MockedFunction<typeof helper.sendSocketNotification>
 
   beforeEach(() => {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const Helper = require('../../src/backend/Backend') as new () => NodeHelperModule
     helper = new Helper()
     Object.assign(helper, { name: 'MMM-Hello-World-Ts' })
 
     // Mock the MMM sendSocketNotification function which returns data back to the frontend
-    mockedSendSocketNotification = helper.sendSocketNotification as jest.MockedFunction<
-      typeof helper.sendSocketNotification
-    >
+    mockedSendSocketNotification = helper.sendSocketNotification as MockedFunction<typeof helper.sendSocketNotification>
 
     config = {
       text: 'Hello World!',
@@ -25,18 +24,17 @@ describe('Backend', () => {
       pauseWhenHidden: false,
     }
 
-    jest.useFakeTimers().setSystemTime(new Date('2023-03-06T09:00:00'))
+    vi.useFakeTimers().setSystemTime(new Date('2023-03-06T09:00:00'))
   })
 
   afterEach(() => {
-    jest.clearAllMocks()
-    jest.useRealTimers()
+    vi.clearAllMocks()
+    vi.useRealTimers()
   })
 
   test('the generated CommonJS helper preserves the static create method', () => {
     // Loading the distributed file catches bundler interop errors that TS source tests miss.
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const BuiltHelper = require('../../node_helper.js') as new () => NodeHelperModule
+    const BuiltHelper = loadBuiltHelper()
     const builtHelper = new BuiltHelper()
     Object.assign(builtHelper, { name: 'MMM-Hello-World-Ts' })
     builtHelper.socketNotificationReceived(SocketNotification.GREETINGS_TEXT_REQUEST, {

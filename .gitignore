@@ -238,3 +238,5 @@ Temporary Items
 
 eslint-results.sarif
 cypress
+
+.vitest/

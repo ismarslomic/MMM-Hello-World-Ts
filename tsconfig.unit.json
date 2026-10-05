@@ -2,11 +2,8 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
-    "types": ["jest", "node", "magicmirror-module"],
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "ignoreDeprecations": "6.0"
+    "types": ["node", "magicmirror-module"]
   },
-  "include": ["src/**/*.ts", "__tests__/unit/**/*.ts", "__mocks__/**/*.ts"],
+  "include": ["src/**/*.ts", "__tests__/unit/**/*.ts", "vitest.config.mts"],
   "exclude": []
 }

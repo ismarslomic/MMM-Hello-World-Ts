@@ -6,7 +6,7 @@ import * as Log from 'logger'
 import { SocketNotification } from '../constants/SocketNotifications'
 import { GreetingsResponse, isGreetingsRequest } from '../types/Greetings'
 
-module.exports = NodeHelper.create({
+export default NodeHelper.create({
   start(): void {
     Log.debug(`${this.name} is started!`)
   },
