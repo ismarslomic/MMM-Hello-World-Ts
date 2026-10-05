@@ -24,6 +24,24 @@ describe('Frontend', () => {
     expect(typeof implementation.socketNotificationReceived).toBe('function')
   })
 
+  describe('first rendering', () => {
+    it('shows configured text before the first socket response', () => {
+      const { implementation } = checkAndExtractRegistration(mockModuleRegister.mock.lastCall)
+      expect(implementation.getTemplateData()).toEqual({ text: 'Hello Ismar', lastUpdated: '' })
+    })
+
+    it('renders text and a formatted date after a socket response', () => {
+      const { implementation } = checkAndExtractRegistration(mockModuleRegister.mock.lastCall)
+      const lastUpdated = Date.UTC(2026, 9, 4, 12)
+      implementation.socketNotificationReceived('GREETINGS_TEXT_RESPONSE', { text: 'Updated greeting', lastUpdated })
+      expect(implementation.getTemplateData()).toEqual({
+        text: 'Updated greeting',
+        lastUpdated: new Date(lastUpdated).toLocaleString(),
+      })
+      expect(implementation.updateDom).toHaveBeenCalledTimes(1)
+    })
+  })
+
   describe('getStyles overriden function', () => {
     it('should return correct styles', () => {
       // given
@@ -62,6 +80,7 @@ const checkAndExtractRegistration = (call?: unknown) => {
     config: {
       text: 'Hello Ismar',
     },
+    updateDom: jest.fn(),
     file: (fileName: string) => `/file/${fileName}`,
     sendSocketNotification: sendSocketNotificationMock,
   }
