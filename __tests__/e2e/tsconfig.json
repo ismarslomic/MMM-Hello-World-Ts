@@ -3,8 +3,8 @@
   "compilerOptions": {
     "noEmit": true,
     "lib": ["DOM", "ESNext"],
-    "types": ["cypress", "node"]
+    "types": ["node"]
   },
-  "include": ["./**/*.ts"],
+  "include": ["./**/*.ts", "../../playwright.config.ts"],
   "exclude": []
 }
