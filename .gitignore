@@ -237,6 +237,7 @@ Temporary Items
 .apdisk
 
 eslint-results.sarif
-cypress
-
 .vitest/
+playwright-report
+test-results
+MagicMirror

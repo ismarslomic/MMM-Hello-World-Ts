@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 jobs:
-  cypress:
-    name: Cypress against MagicMirror 2.38.0
+  playwright:
+    name: Playwright against MagicMirror 2.38.0
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -54,19 +54,24 @@ jobs:
       - name: Configure MagicMirror for the tests
         run: cp __tests__/e2e/mm/config.js MagicMirror/config/config.js
 
-      - name: Run Cypress against the built module
-        uses: cypress-io/github-action@v7.4.6
-        with:
-          install: false
-          config-file: __tests__/e2e/cypress.config.ts
-          start: npm --prefix MagicMirror run server
-          wait-on: http://localhost:8080
-          wait-on-timeout: 120
+      - name: Install the Chromium test browser
+        run: npx playwright install --with-deps chromium
 
-      - name: Upload screenshots when a test fails
+      - name: Run Playwright against the built module
+        run: npm run test:e2e
+
+      - name: Upload the test report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: playwright-report
+          if-no-files-found: ignore
+
+      - name: Upload traces and screenshots when a test fails
         if: failure()
         uses: actions/upload-artifact@v7
         with:
-          name: cypress-failure-screenshots
-          path: cypress/screenshots
+          name: playwright-failure-artifacts
+          path: test-results
           if-no-files-found: ignore

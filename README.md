@@ -106,11 +106,16 @@ Coverage includes `src/**/*.ts` and produces `coverage/lcov.info` for Codecov. T
 
 ### Run e2e tests locally
 
-E2E CI tests newly built module code against MagicMirror 2.38.0 using Node.js 24 and Cypress. To run locally, build the module, install it in that MagicMirror release, copy `__tests__/e2e/mm/config.js` to `MagicMirror/config/config.js`, and start `npm run server` in MagicMirror. The fixture uses two instances to verify socket isolation and subsequent polling updates.
+E2E tests run the newly built module against MagicMirror 2.38.0 using Node.js 24 and Playwright Chromium. The fixture uses two instances to verify socket isolation and subsequent polling updates. Playwright starts the server, waits for readiness, and stops it after the tests; locally it can reuse a running server.
+
+To run locally, place a MagicMirror 2.38.0 checkout in `MagicMirror/`, install its server dependencies with `npm ci --omit=dev --omit=optional`, build and install this module in `MagicMirror/modules/MMM-Hello-World-Ts`, and copy `__tests__/e2e/mm/config.js` to `MagicMirror/config/config.js`. Then install the test browser and run:
 
 ```bash
+npx playwright install chromium
 npm run test:e2e
 ```
+
+Use `npx playwright show-report` to open the HTML results. CI uploads the report and retains traces and screenshots for failed tests. This replaces the Cypress-specific CI action with the same npm command used locally.
 
 ### Codecov integration in Github actions
 

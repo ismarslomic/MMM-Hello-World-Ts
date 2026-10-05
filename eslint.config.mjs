@@ -6,7 +6,16 @@ import globals from 'globals'
 
 export default defineConfig(
   {
-    ignores: ['node_modules/**', '.husky/**', 'coverage/**', 'MMM-Hello-World-Ts.js', 'node_helper.js'],
+    ignores: [
+      'node_modules/**',
+      '.husky/**',
+      'coverage/**',
+      'playwright-report/**',
+      'test-results/**',
+      'MagicMirror/**',
+      'MMM-Hello-World-Ts.js',
+      'node_helper.js',
+    ],
   },
   {
     files: ['**/*.{js,mjs,ts,mts}'],
@@ -24,7 +33,7 @@ export default defineConfig(
     languageOptions: { globals: { ...globals.browser, Module: 'readonly' } },
   },
   {
-    files: ['src/backend/**/*.ts', 'scripts/**/*.mjs', '*.mjs', '*.js', '__tests__/e2e/cypress.config.ts'],
+    files: ['src/backend/**/*.ts', 'scripts/**/*.mjs', '*.mjs', '*.js', 'playwright.config.ts'],
     languageOptions: { globals: globals.node },
   },
   {
@@ -34,12 +43,6 @@ export default defineConfig(
   {
     files: ['__tests__/unit/**/*.ts', 'vitest.config.mts'],
     languageOptions: { globals: { ...globals.node, Module: 'writable', Log: 'writable' } },
-  },
-  {
-    files: ['__tests__/e2e/**/*.cy.ts'],
-    languageOptions: {
-      globals: { ...globals.browser, cy: 'readonly', describe: 'readonly', beforeEach: 'readonly', it: 'readonly' },
-    },
   },
   prettier
 )
