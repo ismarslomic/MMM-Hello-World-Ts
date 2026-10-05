@@ -75,12 +75,11 @@ see [lint-staged](lint-staged.config.mjs) and [husky pre-commit](.husky/pre-comm
 
 ### Temporary dependency overrides
 
-Two scoped npm overrides keep deprecated packages out of the development install while preserving SARIF reporting and Jest's Babel coverage provider:
+A scoped npm override keeps deprecated packages out of the development install while preserving SARIF reporting:
 
 - `@microsoft/eslint-formatter-sarif` uses the project's ESLint version through `$eslint` instead of installing end-of-life ESLint 8. Remove this override when the formatter supports the project's ESLint version in its dependency or peer dependency range.
-- `babel-plugin-istanbul` uses `test-exclude` 8.0.0 instead of version 7, which installs deprecated `glob` 10. The `test-exclude` implementation is unchanged between 7.0.2 and 8.0.0; version 8 uses supported `glob` 13. Remove this override when the Babel plugin requests `test-exclude` 8 or later.
 
-When changing either override, run `npm ci`, lint reporting, and unit tests with coverage. Check that the lockfile contains no deprecated packages and that coverage still includes the same source files. See [issue #792](https://github.com/ismarslomic/MMM-Hello-World-Ts/issues/792) for the investigation.
+When changing the override, run `npm ci`, lint reporting, and unit tests with coverage. Check that the lockfile contains no deprecated packages and that coverage still includes the same source files. See [issue #792](https://github.com/ismarslomic/MMM-Hello-World-Ts/issues/792) for the investigation.
 
 ### Linting and formatting
 
@@ -98,7 +97,12 @@ The bundles and sourcemaps are checked in so users can install without developme
 
 ```bash
 npm run test:unit
+npm run test:unit:coverage
 ```
+
+Unit tests use Vitest with explicit imports, TypeScript module aliases for MagicMirror mocks, and V8 coverage. This replaces Jest and ts-jest without a separate test compiler configuration. The built CommonJS helper is also executed with mocked MagicMirror dependencies to catch bundler interop errors. Separate `npm run typecheck` remains required because Vitest does not typecheck tests.
+
+Coverage includes `src/**/*.ts` and produces `coverage/lcov.info` for Codecov. The built-in GitHub Actions reporter annotates failures, and the JUnit report is uploaded as an Actions artifact. The Jest-specific coverage override is no longer needed.
 
 ### Run e2e tests locally
 

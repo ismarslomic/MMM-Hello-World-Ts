@@ -38,7 +38,16 @@ jobs:
         run: npm run check:generated
 
       - name: Run unit tests with coverage
+        id: unit-tests
         run: npm run test:unit:coverage
+
+      - name: Upload unit test results
+        if: always() && steps.unit-tests.outcome != 'skipped'
+        uses: actions/upload-artifact@v7
+        with:
+          name: unit-test-results
+          path: coverage/unit-test-results.xml
+          if-no-files-found: warn
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7

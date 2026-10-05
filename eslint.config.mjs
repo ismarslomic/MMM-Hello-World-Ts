@@ -9,12 +9,12 @@ export default defineConfig(
     ignores: ['node_modules/**', '.husky/**', 'coverage/**', 'MMM-Hello-World-Ts.js', 'node_helper.js'],
   },
   {
-    files: ['**/*.{js,mjs,ts}'],
+    files: ['**/*.{js,mjs,ts,mts}'],
     extends: [js.configs.recommended],
     languageOptions: { ecmaVersion: 'latest' },
   },
   {
-    files: ['**/*.ts'],
+    files: ['**/*.{ts,mts}'],
     extends: [typescriptEslint.configs.recommended],
     languageOptions: { sourceType: 'module' },
     rules: { '@typescript-eslint/no-require-imports': ['error', { allowAsImport: true }] },
@@ -32,8 +32,8 @@ export default defineConfig(
     languageOptions: { sourceType: 'commonjs' },
   },
   {
-    files: ['__tests__/unit/**/*.ts', '__mocks__/**/*.{js,ts}', 'setupJest.js'],
-    languageOptions: { globals: { ...globals.node, ...globals.jest, Module: 'writable', Log: 'writable' } },
+    files: ['__tests__/unit/**/*.ts', 'vitest.config.mts'],
+    languageOptions: { globals: { ...globals.node, Module: 'writable', Log: 'writable' } },
   },
   {
     files: ['__tests__/e2e/**/*.cy.ts'],
