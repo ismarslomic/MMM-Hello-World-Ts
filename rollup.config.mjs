@@ -1,7 +1,6 @@
 import typescript from '@rollup/plugin-typescript'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
-import terser from '@rollup/plugin-terser'
 import fs from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -25,7 +24,7 @@ export default [
   {
     input: './src/frontend/Frontend.ts',
     external: ['logger'],
-    plugins: [typescript({ tsconfig: './tsconfig.frontend.json' }), nodeResolve(), commonjs(), terser()],
+    plugins: [typescript({ tsconfig: './tsconfig.frontend.json' }), nodeResolve(), commonjs()],
     output: {
       file: './' + pkg.main,
       format: 'umd',
@@ -39,7 +38,7 @@ export default [
   {
     input: './src/backend/Backend.ts',
     external: ['node_helper', 'logger'],
-    plugins: [typescript({ tsconfig: './tsconfig.backend.json' }), nodeResolve(), terser()],
+    plugins: [typescript({ tsconfig: './tsconfig.backend.json' }), nodeResolve()],
     output: {
       file: './node_helper.js',
       format: 'cjs',
