@@ -3,6 +3,9 @@ import { FrontendModule } from '../types/FrontendModule'
 import * as Log from 'logger'
 import { SocketNotification } from '../constants/SocketNotifications'
 
+// JavaScript timers use a signed 32-bit delay; larger values overflow.
+const maximumTimerDelay = 2 ** 31 - 1
+
 const frontendModule: Omit<
   FrontendModule,
   'name' | 'identifier' | 'config' | 'file' | 'updateDom' | 'sendSocketNotification'
@@ -11,6 +14,8 @@ const frontendModule: Omit<
   // Default module config
   defaults: {
     text: 'Hello World!',
+    updateInterval: 10000,
+    pauseWhenHidden: false,
   },
 
   // MM function: this method is called when all modules are loaded and the system is ready to boot up.
@@ -18,7 +23,7 @@ const frontendModule: Omit<
     Log.debug(`${this.name} is starting`)
     this.state = { text: this.config.text, lastUpdated: null }
     this.loadData()
-    this.scheduleUpdate()
+    this.startPolling()
     this.updateDom()
   },
 
@@ -70,14 +75,48 @@ const frontendModule: Omit<
     }
   },
 
-  // Custom function: load data every 10 seconds
-  scheduleUpdate(): void {
-    setInterval(() => {
-      this.loadData()
-    }, 10000) // 10 seconds
+  suspend(): void {
+    if (this.config.pauseWhenHidden) {
+      this.isPollingSuspended = true
+      this.stopPolling()
+    }
   },
 
-  // Custom function: send socker notification to node helper with config from user
+  resume(): void {
+    // Repeated show calls must not create extra timers or requests.
+    if (this.config.pauseWhenHidden && this.isPollingSuspended) {
+      this.isPollingSuspended = false
+      this.loadData()
+      this.startPolling()
+    }
+  },
+
+  startPolling(): void {
+    this.stopPolling()
+    if (this.isPollingSuspended) {
+      return
+    }
+
+    const configuredInterval = this.config.updateInterval
+    const isValidInterval =
+      Number.isInteger(configuredInterval) && configuredInterval > 0 && configuredInterval <= maximumTimerDelay
+    const updateInterval = isValidInterval ? configuredInterval : this.defaults.updateInterval
+    if (!isValidInterval) {
+      Log.error(`${this.name} has an invalid updateInterval; using ${updateInterval} ms`)
+    }
+    this.pollingTimer = setInterval(() => {
+      this.loadData()
+    }, updateInterval)
+  },
+
+  stopPolling(): void {
+    if (this.pollingTimer !== undefined) {
+      clearInterval(this.pollingTimer)
+      this.pollingTimer = undefined
+    }
+  },
+
+  // Send this instance's configuration to the shared node helper.
   loadData(): void {
     Log.debug(`${this.name} is loading data`)
     const request: GreetingsRequest = { identifier: this.identifier, config: this.config }
