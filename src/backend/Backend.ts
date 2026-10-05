@@ -3,7 +3,7 @@
 import * as NodeHelper from 'node_helper'
 import * as Log from 'logger'
 import { SocketNotification } from '../constants/SocketNotifications'
-import { Config } from '../types/Config'
+import { GreetingsRequest, GreetingsResponse } from '../types/Greetings'
 
 module.exports = NodeHelper.create({
   start(): void {
@@ -14,11 +14,14 @@ module.exports = NodeHelper.create({
     Log.debug(`${this.name} is started!`)
   },
 
-  async socketNotificationReceived(notification: string, config: Config) {
+  async socketNotificationReceived(notification: string, request: GreetingsRequest) {
     if (notification === SocketNotification.GREETINGS_TEXT_REQUEST) {
-      Log.debug(`${this.name} received a socket notification: '${notification}' with config: ${JSON.stringify(config)}`)
-      const payload = {
-        text: `${this.name} says: ${config.text}`,
+      Log.debug(
+        `${this.name} received a socket notification: '${notification}' with config: ${JSON.stringify(request)}`
+      )
+      const payload: GreetingsResponse = {
+        identifier: request.identifier,
+        text: `${this.name} says: ${request.config.text}`,
         lastUpdated: Date.now(),
       }
       this.sendSocketNotification(SocketNotification.GREETINGS_TEXT_RESPONSE, payload)

@@ -33,12 +33,47 @@ describe('Frontend', () => {
     it('renders text and a formatted date after a socket response', () => {
       const { implementation } = checkAndExtractRegistration(mockModuleRegister.mock.lastCall)
       const lastUpdated = Date.UTC(2026, 9, 4, 12)
-      implementation.socketNotificationReceived('GREETINGS_TEXT_RESPONSE', { text: 'Updated greeting', lastUpdated })
+      implementation.socketNotificationReceived('GREETINGS_TEXT_RESPONSE', {
+        identifier: 'module_1',
+        text: 'Updated greeting',
+        lastUpdated,
+      })
       expect(implementation.getTemplateData()).toEqual({
         text: 'Updated greeting',
         lastUpdated: new Date(lastUpdated).toLocaleString(),
       })
       expect(implementation.updateDom).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('socket instance isolation', () => {
+    it('includes the instance identifier with the request', () => {
+      const { implementation } = checkAndExtractRegistration(mockModuleRegister.mock.lastCall)
+      implementation.loadData()
+      expect(sendSocketNotificationMock).toHaveBeenLastCalledWith('GREETINGS_TEXT_REQUEST', {
+        identifier: 'module_1',
+        config: implementation.config,
+      })
+    })
+
+    it('keeps independent data across interleaved responses', () => {
+      const first = checkAndExtractRegistration(mockModuleRegister.mock.lastCall).implementation
+      const second: ModuleProperties<Config> = {
+        ...checkAndExtractRegistration(mockModuleRegister.mock.lastCall).implementation,
+        identifier: 'module_2',
+      }
+      for (const text of ['First greeting', 'Updated first greeting']) {
+        const firstResponse = { identifier: 'module_1', text, lastUpdated: 1 }
+        const secondResponse = { identifier: 'module_2', text: 'Second greeting', lastUpdated: 2 }
+        for (const instance of [first, second]) {
+          instance.socketNotificationReceived('GREETINGS_TEXT_RESPONSE', firstResponse)
+          instance.socketNotificationReceived('GREETINGS_TEXT_RESPONSE', secondResponse)
+        }
+        expect(first.state.text).toBe(text)
+        expect(second.state.text).toBe('Second greeting')
+      }
+      expect(first.updateDom).toHaveBeenCalledTimes(2)
+      expect(second.updateDom).toHaveBeenCalledTimes(2)
     })
   })
 
@@ -80,6 +115,7 @@ const checkAndExtractRegistration = (call?: unknown) => {
     config: {
       text: 'Hello Ismar',
     },
+    identifier: 'module_1',
     updateDom: jest.fn(),
     file: (fileName: string) => `/file/${fileName}`,
     sendSocketNotification: sendSocketNotificationMock,

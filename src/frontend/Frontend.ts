@@ -1,3 +1,4 @@
+import { GreetingsRequest, GreetingsResponse } from '../types/Greetings'
 import { Config } from '../types/Config'
 import * as Log from 'logger'
 import { SocketNotification } from '../constants/SocketNotifications'
@@ -43,8 +44,12 @@ Module.register<Config>('MMM-Hello-World-Ts', {
   },
 
   // MM function: receives socket notifications from node helper
-  socketNotificationReceived(notificationIdentifier: string, payload): void {
+  socketNotificationReceived(notificationIdentifier: string, payload: GreetingsResponse): void {
     if (notificationIdentifier === SocketNotification.GREETINGS_TEXT_RESPONSE) {
+      // The helper broadcasts to every instance of this module type.
+      if (payload.identifier !== this.identifier) {
+        return
+      }
       Log.debug(
         `${this.name} received a socket notification: '${notificationIdentifier}' with payload: ${JSON.stringify(
           payload
@@ -67,6 +72,7 @@ Module.register<Config>('MMM-Hello-World-Ts', {
   // Custom function: send socker notification to node helper with config from user
   loadData(): void {
     Log.debug(`${this.name} is loading data`)
-    this.sendSocketNotification('GREETINGS_TEXT_REQUEST', this.config)
+    const request: GreetingsRequest = { identifier: this.identifier, config: this.config }
+    this.sendSocketNotification(SocketNotification.GREETINGS_TEXT_REQUEST, request)
   },
 })

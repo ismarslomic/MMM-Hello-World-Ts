@@ -35,8 +35,9 @@ describe('Backend', () => {
   })
 
   test('sending greetings socket notification', async () => {
-    helper.socketNotificationReceived(SocketNotification.GREETINGS_TEXT_REQUEST, config)
+    helper.socketNotificationReceived(SocketNotification.GREETINGS_TEXT_REQUEST, { identifier: 'module_1', config })
     expect(mockedSendSocketNotification.mock.calls[0][0]).toBe(SocketNotification.GREETINGS_TEXT_RESPONSE)
+    expect(mockedSendSocketNotification.mock.calls[0][1].identifier).toBe('module_1')
     expect(mockedSendSocketNotification.mock.calls[0][1].text).toBe('MMM-Hello-World-Ts says: Hello World!')
   })
 })
