@@ -34,8 +34,8 @@ jobs:
       - name: Check TypeScript types
         run: npm run typecheck
 
-      - name: Run build
-        run: npm run build
+      - name: Build and verify checked-in JavaScript
+        run: npm run check:generated
 
       - name: Run unit tests with coverage
         run: npm run test:unit:coverage
