@@ -11,14 +11,12 @@ const frontendModule: Omit<
   'name' | 'identifier' | 'config' | 'file' | 'updateDom' | 'sendSocketNotification'
 > &
   ThisType<FrontendModule> = {
-  // Default module config
   defaults: {
     text: 'Hello World!',
     updateInterval: 10000,
     pauseWhenHidden: false,
   },
 
-  // MM function: this method is called when all modules are loaded and the system is ready to boot up.
   start(): void {
     Log.debug(`${this.name} is starting`)
     this.state = { text: this.config.text, lastUpdated: null }
@@ -27,23 +25,14 @@ const frontendModule: Omit<
     this.updateDom()
   },
 
-  /**
-   * The getStyles method is called to request any additional stylesheets that need to be loaded.
-   * This method should therefore return an array with strings. If you want to return a full path
-   * to a file in the module folder, use the this.file('filename.css') method. In all cases the
-   * loader will only load a file once. It even checks if the file is available in the default
-   * vendor folder.
-   */
   getStyles() {
     return [this.file('css/MMM-Hello-World-Ts.css')]
   },
 
-  // MM function: loads template
   getTemplate(): string {
     return 'templates/MMM-Hello-World-Ts.njk'
   },
 
-  // MM function: returns template data
   getTemplateData(): { text: string; lastUpdated: string } {
     const lastUpdated = this.state?.lastUpdated
     return {
@@ -52,7 +41,6 @@ const frontendModule: Omit<
     }
   },
 
-  // MM function: receives socket notifications from node helper
   socketNotificationReceived(notificationIdentifier: string, payload: unknown): void {
     if (notificationIdentifier === SocketNotification.GREETINGS_TEXT_RESPONSE) {
       if (!isGreetingsResponse(payload)) {
@@ -116,7 +104,6 @@ const frontendModule: Omit<
     }
   },
 
-  // Send this instance's configuration to the shared node helper.
   loadData(): void {
     Log.debug(`${this.name} is loading data`)
     const request: GreetingsRequest = { identifier: this.identifier, config: this.config }
