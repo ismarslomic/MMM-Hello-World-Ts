@@ -93,6 +93,10 @@ npm run prettier
 
 The bundles and sourcemaps are checked in so users can install without development tools. Run `npm run build` and commit the generated files with TypeScript changes. `npm run check:generated` rebuilds and fails if the checked-in output is stale; CI runs the same check.
 
+Rollup emits readable JavaScript without Terser minification so module authors can inspect the installed code and runtime stack traces. The frontend remains a UMD bundle using MagicMirror's `Log` global, the helper remains CommonJS with external `node_helper` and `logger` dependencies, and both keep sourcemaps.
+
+For this module, removing minification increases the frontend from 3,084 to 6,391 bytes and the helper from 1,711 to 3,268 bytes. Together that adds 4,864 bytes (1,081 bytes when gzip-compressed), a small absolute cost for readable example code and one fewer build dependency. These measurements cover the JavaScript bundles only and do not assume that MagicMirror enables compression.
+
 ### Run unit tests locally
 
 ```bash

@@ -10,5 +10,146 @@
 
   This file is auto-generated. Do not edit.
 ***************************************************************************** */
-!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(require("logger")):"function"==typeof define&&define.amd?define(["logger"],t):t((e="undefined"!=typeof globalThis?globalThis:e||self).Log)}(this,(function(e){"use strict";function t(e){var t=Object.create(null);return e&&Object.keys(e).forEach((function(i){if("default"!==i){var n=Object.getOwnPropertyDescriptor(e,i);Object.defineProperty(t,i,n.get?n:{enumerable:!0,get:function(){return e[i]}})}})),t.default=e,Object.freeze(t)}var i,n=t(e);!function(e){e.GREETINGS_TEXT_REQUEST="GREETINGS_TEXT_REQUEST",e.GREETINGS_TEXT_RESPONSE="GREETINGS_TEXT_RESPONSE"}(i||(i={}));const s={defaults:{text:"Hello World!",updateInterval:1e4,pauseWhenHidden:!1},start(){n.debug(`${this.name} is starting`),this.state={text:this.config.text,lastUpdated:null},this.loadData(),this.startPolling(),this.updateDom()},getStyles(){return[this.file("css/MMM-Hello-World-Ts.css")]},getTemplate:()=>"templates/MMM-Hello-World-Ts.njk",getTemplateData(){const e=this.state?.lastUpdated;return{text:this.state?.text??this.config.text,lastUpdated:null==e?"":new Date(e).toLocaleString()}},socketNotificationReceived(e,t){if(e===i.GREETINGS_TEXT_RESPONSE){if(!function(e){return"object"==typeof e&&null!==e&&"identifier"in e&&"string"==typeof e.identifier&&"text"in e&&"string"==typeof e.text&&"lastUpdated"in e&&"number"==typeof e.lastUpdated&&Number.isFinite(e.lastUpdated)&&!Number.isNaN(new Date(e.lastUpdated).getTime())}(t))return void n.error(`${this.name} received an invalid greeting response`);if(t.identifier!==this.identifier)return;n.debug(`${this.name} received a socket notification: '${e}' with payload: ${JSON.stringify(t)}`),this.state=t,this.updateDom()}else n.error(`${this.name} received unknown socket notification: '${e}'`)},suspend(){this.config.pauseWhenHidden&&(this.isPollingSuspended=!0,this.stopPolling())},resume(){this.config.pauseWhenHidden&&this.isPollingSuspended&&(this.isPollingSuspended=!1,this.loadData(),this.startPolling())},startPolling(){if(this.stopPolling(),this.isPollingSuspended)return;const e=this.config.updateInterval,t=Number.isInteger(e)&&e>0&&e<=2147483647,i=t?e:this.defaults.updateInterval;t||n.error(`${this.name} has an invalid updateInterval; using ${i} ms`),this.pollingTimer=setInterval((()=>{this.loadData()}),i)},stopPolling(){void 0!==this.pollingTimer&&(clearInterval(this.pollingTimer),this.pollingTimer=void 0)},loadData(){n.debug(`${this.name} is loading data`);const e={identifier:this.identifier,config:this.config};this.sendSocketNotification(i.GREETINGS_TEXT_REQUEST,e)}};Module.register("MMM-Hello-World-Ts",s)}));
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('logger')) :
+    typeof define === 'function' && define.amd ? define(['logger'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Log));
+})(this, (function (Log) { 'use strict';
+
+    function _interopNamespaceDefault(e) {
+        var n = Object.create(null);
+        if (e) {
+            Object.keys(e).forEach(function (k) {
+                if (k !== 'default') {
+                    var d = Object.getOwnPropertyDescriptor(e, k);
+                    Object.defineProperty(n, k, d.get ? d : {
+                        enumerable: true,
+                        get: function () { return e[k]; }
+                    });
+                }
+            });
+        }
+        n.default = e;
+        return Object.freeze(n);
+    }
+
+    var Log__namespace = /*#__PURE__*/_interopNamespaceDefault(Log);
+
+    /**
+     * Type guard for {@link GreetingsRequest}. Socket payloads cross a runtime boundary; TypeScript alone
+     * cannot validate them. Only `identifier` and `config.text` are checked, as these are the fields the node helper uses.
+     */
+    /**
+     * Type guard for {@link GreetingsResponse}. Requires string `identifier` and `text`, and a finite
+     * `lastUpdated` that is a valid date timestamp.
+     */
+    function isGreetingsResponse(payload) {
+        if (typeof payload !== 'object' || payload === null)
+            return false;
+        return ('identifier' in payload &&
+            typeof payload.identifier === 'string' &&
+            'text' in payload &&
+            typeof payload.text === 'string' &&
+            'lastUpdated' in payload &&
+            typeof payload.lastUpdated === 'number' &&
+            Number.isFinite(payload.lastUpdated) &&
+            !Number.isNaN(new Date(payload.lastUpdated).getTime()));
+    }
+
+    var SocketNotification;
+    (function (SocketNotification) {
+        SocketNotification["GREETINGS_TEXT_REQUEST"] = "GREETINGS_TEXT_REQUEST";
+        SocketNotification["GREETINGS_TEXT_RESPONSE"] = "GREETINGS_TEXT_RESPONSE";
+    })(SocketNotification || (SocketNotification = {}));
+
+    // JavaScript timers use a signed 32-bit delay; larger values overflow.
+    const maximumTimerDelay = 2 ** 31 - 1;
+    const frontendModule = {
+        defaults: {
+            text: 'Hello World!',
+            updateInterval: 10000,
+            pauseWhenHidden: false,
+        },
+        start() {
+            Log__namespace.debug(`${this.name} is starting`);
+            this.state = { text: this.config.text, lastUpdated: null };
+            this.loadData();
+            this.startPolling();
+            this.updateDom();
+        },
+        getStyles() {
+            return [this.file('css/MMM-Hello-World-Ts.css')];
+        },
+        getTemplate() {
+            return 'templates/MMM-Hello-World-Ts.njk';
+        },
+        getTemplateData() {
+            const lastUpdated = this.state?.lastUpdated;
+            return {
+                text: this.state?.text ?? this.config.text,
+                lastUpdated: lastUpdated == null ? '' : new Date(lastUpdated).toLocaleString(),
+            };
+        },
+        socketNotificationReceived(notificationIdentifier, payload) {
+            if (notificationIdentifier === SocketNotification.GREETINGS_TEXT_RESPONSE) {
+                if (!isGreetingsResponse(payload)) {
+                    Log__namespace.error(`${this.name} received an invalid greeting response`);
+                    return;
+                }
+                // The helper broadcasts to every instance of this module type.
+                if (payload.identifier !== this.identifier) {
+                    return;
+                }
+                Log__namespace.debug(`${this.name} received a socket notification: '${notificationIdentifier}' with payload: ${JSON.stringify(payload)}`);
+                this.state = payload;
+                this.updateDom();
+            }
+            else {
+                Log__namespace.error(`${this.name} received unknown socket notification: '${notificationIdentifier}'`);
+            }
+        },
+        suspend() {
+            if (this.config.pauseWhenHidden) {
+                this.isPollingSuspended = true;
+                this.stopPolling();
+            }
+        },
+        resume() {
+            // Repeated show calls must not create extra timers or requests.
+            if (this.config.pauseWhenHidden && this.isPollingSuspended) {
+                this.isPollingSuspended = false;
+                this.loadData();
+                this.startPolling();
+            }
+        },
+        startPolling() {
+            this.stopPolling();
+            if (this.isPollingSuspended) {
+                return;
+            }
+            const configuredInterval = this.config.updateInterval;
+            const isValidInterval = Number.isInteger(configuredInterval) && configuredInterval > 0 && configuredInterval <= maximumTimerDelay;
+            const updateInterval = isValidInterval ? configuredInterval : this.defaults.updateInterval;
+            if (!isValidInterval) {
+                Log__namespace.error(`${this.name} has an invalid updateInterval; using ${updateInterval} ms`);
+            }
+            this.pollingTimer = setInterval(() => {
+                this.loadData();
+            }, updateInterval);
+        },
+        stopPolling() {
+            if (this.pollingTimer !== undefined) {
+                clearInterval(this.pollingTimer);
+                this.pollingTimer = undefined;
+            }
+        },
+        loadData() {
+            Log__namespace.debug(`${this.name} is loading data`);
+            const request = { identifier: this.identifier, config: this.config };
+            this.sendSocketNotification(SocketNotification.GREETINGS_TEXT_REQUEST, request);
+        },
+    };
+    Module.register('MMM-Hello-World-Ts', frontendModule);
+
+}));
 //# sourceMappingURL=MMM-Hello-World-Ts.js.map
