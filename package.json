@@ -27,7 +27,8 @@
     "test:e2e": "cypress run -C __tests__/e2e/cypress.config.ts",
     "test:unit": "jest",
     "test:unit:coverage": "jest --coverage",
-    "typecheck": "tsc --noEmit -p tsconfig.frontend.json && tsc --noEmit -p tsconfig.backend.json && tsc --noEmit -p tsconfig.unit.json && tsc -p __tests__/e2e/tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.frontend.json && tsc --noEmit -p tsconfig.backend.json && tsc --noEmit -p tsconfig.unit.json && tsc -p __tests__/e2e/tsconfig.json",
+    "lint:css": "stylelint \"css/**/*.css\""
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -48,11 +49,11 @@
     "prettier": "^3.9.8",
     "rollup": "^4.63.1",
     "stylelint": "^17.15.0",
-    "stylelint-prettier": "^5.0.3",
     "ts-jest": "^29.4.12",
     "tslib": "^2.8.1",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.69.0"
+    "typescript-eslint": "^8.69.0",
+    "stylelint-config-standard": "^40.0.0"
   },
   "dependencies": {
     "is-ci": "^4.1.0"

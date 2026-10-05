@@ -66,6 +66,7 @@ see [lint-staged](lint-staged.config.mjs) and [husky pre-commit](.husky/pre-comm
 
 ```bash
 npm run lint
+npm run lint:css
 npm run prettier
 ```
 

@@ -30,6 +30,9 @@ jobs:
       - name: Run code linting
         run: npm run lint
 
+      - name: Lint CSS
+        run: npm run lint:css
+
       - name: Run code style linting
         run: npm run prettier
 
