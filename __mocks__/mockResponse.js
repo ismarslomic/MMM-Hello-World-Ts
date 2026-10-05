@@ -13,23 +13,23 @@ const successfulResponse = () => ({
           {
             distance: {
               text: '203 km',
-              value: 203466
+              value: 203466,
             },
             duration: {
               text: '3 timer 0 min',
-              value: 10782
+              value: 10782,
             },
             duration_in_traffic: {
               text: '2 timer 48 min',
-              value: 10064
+              value: 10064,
             },
-            status: 'OK'
-          }
-        ]
-      }
+            status: 'OK',
+          },
+        ],
+      },
     ],
-    status: 'OK'
-  }
+    status: 'OK',
+  },
 })
 
 const notFoundStatusResponse = () => ({
@@ -42,8 +42,8 @@ const notFoundStatusResponse = () => ({
     destination_addresses: [],
     origin_addresses: [],
     rows: [],
-    status: 'NOT_FOUND'
-  }
+    status: 'NOT_FOUND',
+  },
 })
 
 const undefinedDataResponse = () => ({
@@ -52,7 +52,7 @@ const undefinedDataResponse = () => ({
   headers: {},
   config: {},
   request: {},
-  data: undefined
+  data: undefined,
 })
 
 module.exports = { successfulResponse, notFoundStatusResponse, undefinedDataResponse }

@@ -1,55 +1,45 @@
-import typescriptEslint from '@typescript-eslint/eslint-plugin'
-import globals from 'globals'
-import tsParser from '@typescript-eslint/parser'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import js from '@eslint/js'
-import { FlatCompat } from '@eslint/eslintrc'
+import { defineConfig } from 'eslint/config'
+import typescriptEslint from 'typescript-eslint'
+import prettier from 'eslint-config-prettier/flat'
+import globals from 'globals'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-})
-
-export default [
+export default defineConfig(
   {
-    ignores: ['**/node_modules', '**/.husky', '**/*.js', '**/*.mjs'],
+    ignores: ['node_modules/**', '.husky/**', 'coverage/**', 'MMM-Hello-World-Ts.js', 'node_helper.js'],
   },
-  ...compat.extends('eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'),
   {
-    plugins: {
-      '@typescript-eslint': typescriptEslint,
-    },
-
-    rules: {
-      '@typescript-eslint/no-require-imports': [
-        'error',
-        {
-          allowAsImport: true,
-        },
-      ],
-    },
-
+    files: ['**/*.{js,mjs,ts}'],
+    extends: [js.configs.recommended],
+    languageOptions: { ecmaVersion: 'latest' },
+  },
+  {
+    files: ['**/*.ts'],
+    extends: [typescriptEslint.configs.recommended],
+    languageOptions: { sourceType: 'module' },
+    rules: { '@typescript-eslint/no-require-imports': ['error', { allowAsImport: true }] },
+  },
+  {
+    files: ['src/frontend/**/*.ts'],
+    languageOptions: { globals: { ...globals.browser, Module: 'readonly' } },
+  },
+  {
+    files: ['src/backend/**/*.ts', '*.mjs', '*.js', '__tests__/e2e/cypress.config.ts'],
+    languageOptions: { globals: globals.node },
+  },
+  {
+    files: ['**/*.js'],
+    languageOptions: { sourceType: 'commonjs' },
+  },
+  {
+    files: ['__tests__/unit/**/*.ts', '__mocks__/**/*.{js,ts}', 'setupJest.js'],
+    languageOptions: { globals: { ...globals.node, ...globals.jest, Module: 'writable', Log: 'writable' } },
+  },
+  {
+    files: ['__tests__/e2e/**/*.cy.ts'],
     languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-        ...globals.es2015,
-        ...globals.jest,
-        Module: true,
-        Log: true,
-      },
-
-      parser: tsParser,
-      ecmaVersion: 5,
-      sourceType: 'commonjs',
-
-      parserOptions: {
-        project: 'tsconfig.lint.json',
-      },
+      globals: { ...globals.browser, cy: 'readonly', describe: 'readonly', beforeEach: 'readonly', it: 'readonly' },
     },
   },
-]
+  prettier
+)

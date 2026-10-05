@@ -3,7 +3,7 @@ global.Log = {
   log: jest.fn(),
   info: jest.fn(),
   warn: jest.fn(),
-  error: jest.fn()
+  error: jest.fn(),
 }
 
 module.exports = {
@@ -11,5 +11,5 @@ module.exports = {
   log: jest.fn(),
   info: jest.fn(),
   warn: jest.fn(),
-  error: jest.fn()
+  error: jest.fn(),
 }
