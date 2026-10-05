@@ -55,7 +55,7 @@ jobs:
         run: cp __tests__/e2e/mm/config.js MagicMirror/config/config.js
 
       - name: Run Cypress against the built module
-        uses: cypress-io/github-action@v7.4.3
+        uses: cypress-io/github-action@v7.4.6
         with:
           install: false
           config-file: __tests__/e2e/cypress.config.ts
