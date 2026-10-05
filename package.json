@@ -22,8 +22,8 @@
     "prettier:fix": "npx prettier --write .",
     "dev": "rollup -c --sourcemap=inline",
     "dev:watch": "npm run dev -- --watch",
-    "prepare": "is-ci || husky",
-    "install:dep": "CI=true npm install --omit=dev",
+    "prepare": "node scripts/install-hooks.mjs",
+    "install:dep": "npm ci --omit=dev",
     "test:e2e": "cypress run -C __tests__/e2e/cypress.config.ts",
     "test:unit": "jest",
     "test:unit:coverage": "jest --coverage",
@@ -54,8 +54,5 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.69.0",
     "stylelint-config-standard": "^40.0.0"
-  },
-  "dependencies": {
-    "is-ci": "^4.1.0"
   }
 }

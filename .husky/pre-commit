@@ -1,1 +1,2 @@
-npx lint-staged
+# Build from the staged source while unrelated edits remain hidden.
+npx lint-staged --hide-unstaged
