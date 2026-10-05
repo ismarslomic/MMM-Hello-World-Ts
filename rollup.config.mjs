@@ -25,7 +25,7 @@ export default [
   {
     input: './src/frontend/Frontend.ts',
     external: ['logger'],
-    plugins: [typescript({ module: 'ESNext' }), nodeResolve(), commonjs(), terser()],
+    plugins: [typescript({ tsconfig: './tsconfig.frontend.json' }), nodeResolve(), commonjs(), terser()],
     output: {
       file: './' + pkg.main,
       format: 'umd',
@@ -39,7 +39,7 @@ export default [
   {
     input: './src/backend/Backend.ts',
     external: ['node_helper', 'logger'],
-    plugins: [typescript({ module: 'ESNext' }), nodeResolve(), terser()],
+    plugins: [typescript({ tsconfig: './tsconfig.backend.json' }), nodeResolve(), terser()],
     output: {
       file: './node_helper.js',
       format: 'cjs',

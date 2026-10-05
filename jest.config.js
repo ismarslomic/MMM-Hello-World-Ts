@@ -7,13 +7,14 @@ module.exports = {
   collectCoverage: false,
   collectCoverageFrom: ['./src/**/*.ts'],
   transform: {
-  	'^.+\\.tsx?$': [
-	  'ts-jest',
+    '^.+\\.tsx?$': [
+      'ts-jest',
       {
+        tsconfig: 'tsconfig.unit.json',
         sourceMap: true,
-        inlineSourceMap: true
-      }
-    ]
+        inlineSourceMap: true,
+      },
+    ],
   },
-  setupFilesAfterEnv: ['<rootDir>/setupJest.js']
+  setupFilesAfterEnv: ['<rootDir>/setupJest.js'],
 }

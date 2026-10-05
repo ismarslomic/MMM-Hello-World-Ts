@@ -26,7 +26,8 @@
     "install:dep": "CI=true npm install --omit=dev",
     "test:e2e": "cypress run -C __tests__/e2e/cypress.config.ts",
     "test:unit": "jest",
-    "test:unit:coverage": "jest --coverage"
+    "test:unit:coverage": "jest --coverage",
+    "typecheck": "tsc --noEmit -p tsconfig.frontend.json && tsc --noEmit -p tsconfig.backend.json && tsc --noEmit -p tsconfig.unit.json && tsc -p __tests__/e2e/tsconfig.json"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.7",

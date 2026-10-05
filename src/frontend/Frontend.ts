@@ -1,9 +1,13 @@
-import { GreetingsRequest, GreetingsResponse } from '../types/Greetings'
-import { Config } from '../types/Config'
+import { GreetingsRequest, isGreetingsResponse } from '../types/Greetings'
+import { FrontendModule } from '../types/FrontendModule'
 import * as Log from 'logger'
 import { SocketNotification } from '../constants/SocketNotifications'
 
-Module.register<Config>('MMM-Hello-World-Ts', {
+const frontendModule: Omit<
+  FrontendModule,
+  'name' | 'identifier' | 'config' | 'file' | 'updateDom' | 'sendSocketNotification'
+> &
+  ThisType<FrontendModule> = {
   // Default module config
   defaults: {
     text: 'Hello World!',
@@ -44,8 +48,12 @@ Module.register<Config>('MMM-Hello-World-Ts', {
   },
 
   // MM function: receives socket notifications from node helper
-  socketNotificationReceived(notificationIdentifier: string, payload: GreetingsResponse): void {
+  socketNotificationReceived(notificationIdentifier: string, payload: unknown): void {
     if (notificationIdentifier === SocketNotification.GREETINGS_TEXT_RESPONSE) {
+      if (!isGreetingsResponse(payload)) {
+        Log.error(`${this.name} received an invalid greeting response`)
+        return
+      }
       // The helper broadcasts to every instance of this module type.
       if (payload.identifier !== this.identifier) {
         return
@@ -75,4 +83,6 @@ Module.register<Config>('MMM-Hello-World-Ts', {
     const request: GreetingsRequest = { identifier: this.identifier, config: this.config }
     this.sendSocketNotification(SocketNotification.GREETINGS_TEXT_REQUEST, request)
   },
-})
+}
+
+Module.register('MMM-Hello-World-Ts', frontendModule)
